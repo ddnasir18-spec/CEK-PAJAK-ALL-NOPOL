@@ -3,35 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🚗 Portal Cek Pajak Kendaraan Indonesia</title>
+    <title>🚗 Portal Cek Pajak - Popup Mode</title>
     <style>
         /* ============================================
-                   CSS VARIABLES & RESET (SAMA SEPERTI SEBELUMNYA)
-                   ============================================ */
+                   CSS VARIABLES & RESET
+                ============================================ */
         :root {
-            --bg-primary: #f0f2f5;
+            --bg-primary: #f0f4f8;
             --bg-card: #ffffff;
             --text-primary: #1a1a2e;
             --text-secondary: #555;
-            --shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-            --radius: 16px;
+            --shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            --radius: 20px;
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            --header-gradient: linear-gradient(135deg, #1a237e, #0d47a1);
-            --border-color: #e0e0e0;
-            --badge-iframe: #28a745;
-            --badge-redirect: #ffc107;
-            --badge-popup: #17a2b8;
-            --badge-proxy: #6f42c1;
+            --header-gradient: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            --border-color: #e8edf2;
+            --card-hover: #f8faff;
         }
 
         [data-theme="dark"] {
-            --bg-primary: #121212;
-            --bg-card: #1e1e2e;
-            --text-primary: #e0e0e0;
-            --text-secondary: #aaa;
-            --shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
-            --border-color: #333;
-            --header-gradient: linear-gradient(135deg, #0d0d2b, #1a1a4e);
+            --bg-primary: #0d1117;
+            --bg-card: #161b22;
+            --text-primary: #e6edf3;
+            --text-secondary: #8b949e;
+            --shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            --border-color: #30363d;
+            --card-hover: #1c2333;
+            --header-gradient: linear-gradient(135deg, #0a0a1a, #1a1a3e, #0d0d2b);
         }
 
         * {
@@ -41,11 +39,12 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
             min-height: 100vh;
             transition: var(--transition);
+            padding: 20px;
         }
 
         /* ============================================
@@ -54,342 +53,318 @@
         .header {
             background: var(--header-gradient);
             color: white;
-            padding: 12px 0;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            transition: var(--transition);
-        }
-
-        .header-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 15px;
+            padding: 24px 30px;
+            border-radius: var(--radius);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 16px;
+            margin-bottom: 28px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -40%;
+            left: -10%;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .logo {
+            position: relative;
+            z-index: 1;
         }
 
         .logo h1 {
-            font-size: 20px;
-            font-weight: 700;
+            font-size: 26px;
+            font-weight: 800;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 10px;
+            letter-spacing: -0.5px;
         }
-        .logo small {
-            display: block;
-            font-size: 10px;
-            opacity: 0.8;
+
+        .logo h1 span {
             font-weight: 300;
+            opacity: 0.6;
+            font-size: 18px;
+        }
+
+        .logo p {
+            font-size: 13px;
+            opacity: 0.7;
+            margin-top: 2px;
+            font-weight: 300;
+            letter-spacing: 0.5px;
         }
 
         .header-actions {
             display: flex;
             align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
+            gap: 12px;
+            position: relative;
+            z-index: 1;
         }
 
         .theme-toggle {
-            background: rgba(255, 255, 255, 0.15);
-            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
             color: white;
-            width: 36px;
-            height: 36px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             cursor: pointer;
-            font-size: 16px;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-        .theme-toggle:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: rotate(20deg);
-        }
-
-        /* ============================================
-                   NAV TABS - SCROLLABLE
-                ============================================ */
-        .nav-tabs-wrapper {
-            max-width: 100%;
-            overflow-x: auto;
-            overflow-y: hidden;
-            padding-bottom: 6px;
-            scrollbar-width: thin;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .nav-tabs-wrapper::-webkit-scrollbar {
-            height: 4px;
-        }
-        .nav-tabs-wrapper::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 4px;
-        }
-
-        .nav-tabs {
-            display: flex;
-            gap: 6px;
-            flex-wrap: nowrap;
-            min-width: max-content;
-        }
-
-        .nav-tabs button {
-            background: rgba(255, 255, 255, 0.12);
-            color: white;
-            border: 2px solid transparent;
-            padding: 6px 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 11px;
-            font-weight: 600;
-            transition: var(--transition);
-            white-space: nowrap;
-            position: relative;
-            flex-shrink: 0;
-        }
-
-        .nav-tabs button:hover {
-            background: rgba(255, 255, 255, 0.25);
-            transform: translateY(-1px);
-        }
-
-        .nav-tabs button.active {
-            background: white;
-            color: #0d47a1;
-            border-color: white;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        }
-
-        .nav-tabs button .badge {
-            font-size: 8px;
-            padding: 1px 5px;
-            border-radius: 8px;
-            margin-left: 3px;
-            font-weight: 400;
-            display: inline-block;
-        }
-
-        .badge-iframe {
-            background: var(--badge-iframe);
-            color: white;
-        }
-        .badge-redirect {
-            background: var(--badge-redirect);
-            color: #333;
-        }
-        .badge-popup {
-            background: var(--badge-popup);
-            color: white;
-        }
-        .badge-proxy {
-            background: var(--badge-proxy);
-            color: white;
-        }
-
-        .nav-tabs button .mode-label {
-            font-size: 8px;
-            opacity: 0.6;
-            display: block;
-            font-weight: 300;
-        }
-
-        /* ============================================
-                   MAIN CONTENT
-                ============================================ */
-        .main-content {
-            max-width: 1400px;
-            margin: 12px auto;
-            padding: 0 15px;
-        }
-
-        .iframe-wrapper {
-            background: var(--bg-card);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            overflow: hidden;
-            height: 75vh;
-            position: relative;
-            transition: var(--transition);
-            border: 1px solid var(--border-color);
-        }
-
-        .iframe-wrapper iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        /* ============================================
-                   LOADING
-                ============================================ */
-        .loading {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-            z-index: 10;
-        }
-        .loading.active {
-            display: flex;
-        }
-
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid var(--border-color);
-            border-top: 4px solid #0d47a1;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-        .loading p {
-            color: var(--text-secondary);
-            font-size: 13px;
-            font-weight: 500;
-        }
-
-        /* ============================================
-                   BLOCKED INFO
-                ============================================ */
-        .blocked-info {
-            display: none;
-            padding: 30px 20px;
-            text-align: center;
-            background: #fff3cd;
-            border-radius: var(--radius);
-            height: 100%;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        [data-theme="dark"] .blocked-info {
-            background: #2d1f00;
-            color: #ffd970;
-        }
-        .blocked-info.active {
-            display: flex;
-        }
-
-        .blocked-info .icon {
-            font-size: 48px;
-            margin-bottom: 15px;
-        }
-        .blocked-info h2 {
-            color: #856404;
             font-size: 20px;
-            margin-bottom: 8px;
-        }
-        [data-theme="dark"] .blocked-info h2 {
-            color: #ffd970;
-        }
-
-        .blocked-info p {
-            color: #856404;
-            max-width: 450px;
-            margin: 0 auto 15px;
-            font-size: 14px;
-        }
-        [data-theme="dark"] .blocked-info p {
-            color: #ffd970;
-        }
-
-        .btn-group {
+            transition: var(--transition);
             display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
+            align-items: center;
             justify-content: center;
+            backdrop-filter: blur(4px);
         }
 
-        .btn-primary {
-            background: #0d47a1;
-            color: white;
-            padding: 10px 24px;
-            border: none;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .btn-primary:hover {
-            background: #1a237e;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(13, 71, 161, 0.4);
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(20deg) scale(1.05);
         }
 
-        .btn-secondary {
-            background: #6c757d;
-            color: white;
-            padding: 10px 24px;
-            border: none;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .btn-secondary:hover {
-            background: #5a6268;
-            transform: translateY(-2px);
-        }
-
-        /* ============================================
-                   PROXY WARNING
-                ============================================ */
-        .proxy-warning {
-            display: none;
-            padding: 10px 16px;
-            background: #f8d7da;
-            color: #721c24;
-            border-radius: 8px;
-            margin-bottom: 12px;
-            font-size: 12px;
+        .stats-badge {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-size: 13px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(4px);
+            display: flex;
             align-items: center;
             gap: 8px;
-            border-left: 4px solid #dc3545;
         }
-        [data-theme="dark"] .proxy-warning {
-            background: #2d0a0e;
-            color: #f5a3a3;
-            border-left-color: #dc3545;
+
+        .stats-badge span {
+            font-weight: 700;
         }
-        .proxy-warning.active {
+
+        /* ============================================
+                   GRID PROVINSI
+                ============================================ */
+        .grid-controls {
             display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .grid-controls .filter-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .grid-controls .filter-label input {
+            padding: 6px 14px;
+            border-radius: 30px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-card);
+            color: var(--text-primary);
+            font-size: 13px;
+            width: 200px;
+            transition: var(--transition);
+            outline: none;
+        }
+
+        .grid-controls .filter-label input:focus {
+            border-color: #302b63;
+            box-shadow: 0 0 0 3px rgba(48, 43, 99, 0.15);
+        }
+
+        .grid-controls .view-toggle {
+            display: flex;
+            gap: 6px;
+        }
+
+        .grid-controls .view-toggle button {
+            padding: 6px 14px;
+            border-radius: 30px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 12px;
+            transition: var(--transition);
+        }
+
+        .grid-controls .view-toggle button.active {
+            background: var(--header-gradient);
+            color: white;
+            border-color: transparent;
+        }
+
+        .grid-controls .view-toggle button:hover:not(.active) {
+            border-color: var(--text-primary);
+        }
+
+        /* ============================================
+                   PROVINCE GRID
+                ============================================ */
+        .province-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 28px;
+        }
+
+        .province-grid.list-view {
+            grid-template-columns: 1fr;
+        }
+
+        .province-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 24px 22px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .province-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
+            border-color: #302b63;
+        }
+
+        .province-card:active {
+            transform: scale(0.98);
+        }
+
+        .province-card .card-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 10px;
+        }
+
+        .province-card .card-header .emoji {
+            font-size: 36px;
+            line-height: 1;
+        }
+
+        .province-card .card-header .name {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .province-card .card-header .badge {
+            font-size: 10px;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            background: #e8f0fe;
+            color: #1a73e8;
+            margin-left: auto;
+        }
+
+        [data-theme="dark"] .province-card .card-header .badge {
+            background: #1a2332;
+            color: #58a6ff;
+        }
+
+        .province-card .card-body {
+            flex: 1;
+        }
+
+        .province-card .card-body .url {
+            font-size: 12px;
+            color: var(--text-secondary);
+            word-break: break-all;
+            opacity: 0.7;
+            font-family: monospace;
+            margin-bottom: 10px;
+        }
+
+        .province-card .card-body .desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .province-card .card-footer {
+            margin-top: 16px;
+            padding-top: 14px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .province-card .card-footer .popup-btn {
+            background: var(--header-gradient);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .province-card .card-footer .popup-btn:hover {
+            transform: scale(1.04);
+            box-shadow: 0 4px 16px rgba(48, 43, 99, 0.3);
+        }
+
+        .province-card .card-footer .popup-btn:active {
+            transform: scale(0.96);
+        }
+
+        .province-card .card-footer .shortcut {
+            font-size: 12px;
+            color: var(--text-secondary);
+            opacity: 0.5;
+            font-family: monospace;
         }
 
         /* ============================================
                    HISTORY
                 ============================================ */
         .history-section {
-            margin-top: 12px;
             background: var(--bg-card);
             border-radius: var(--radius);
-            padding: 12px 16px;
+            padding: 18px 22px;
             box-shadow: var(--shadow);
             border: 1px solid var(--border-color);
             transition: var(--transition);
@@ -402,13 +377,15 @@
             flex-wrap: wrap;
             gap: 8px;
         }
+
         .history-header h3 {
-            font-size: 13px;
+            font-size: 15px;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             color: var(--text-primary);
         }
+
         .history-header .clear-btn {
             background: none;
             border: none;
@@ -416,108 +393,60 @@
             cursor: pointer;
             font-size: 12px;
             font-weight: 500;
-            padding: 2px 10px;
-            border-radius: 4px;
+            padding: 4px 12px;
+            border-radius: 6px;
             transition: var(--transition);
         }
+
         .history-header .clear-btn:hover {
-            background: rgba(220, 53, 69, 0.1);
+            background: rgba(220, 53, 69, 0.08);
         }
 
         .history-list {
             display: flex;
-            gap: 6px;
+            gap: 8px;
             flex-wrap: wrap;
-            margin-top: 8px;
-            max-height: 48px;
+            margin-top: 12px;
+            max-height: 52px;
             overflow-y: auto;
         }
 
         .history-list .chip {
             background: var(--bg-primary);
-            padding: 3px 12px;
-            border-radius: 16px;
-            font-size: 11px;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 12px;
             color: var(--text-primary);
             border: 1px solid var(--border-color);
             display: inline-flex;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
             cursor: pointer;
             transition: var(--transition);
         }
+
         .history-list .chip:hover {
-            border-color: #0d47a1;
-            transform: scale(1.05);
+            border-color: #302b63;
+            transform: scale(1.04);
         }
+
         .history-list .chip .remove {
             color: #dc3545;
             font-weight: bold;
             cursor: pointer;
-            font-size: 12px;
+            font-size: 14px;
+            line-height: 1;
         }
+
         .history-list .chip .remove:hover {
             transform: scale(1.3);
         }
+
         .history-empty {
             color: var(--text-secondary);
-            font-size: 12px;
-            margin-top: 8px;
-        }
-
-        /* ============================================
-                   INFO BANNER
-                ============================================ */
-        .info-banner {
+            font-size: 13px;
             margin-top: 12px;
-            padding: 10px 16px;
-            background: #e3f2fd;
-            border-radius: 8px;
-            border-left: 4px solid #0d47a1;
-            font-size: 12px;
-            color: #0d47a1;
-            transition: var(--transition);
-        }
-        [data-theme="dark"] .info-banner {
-            background: #0a1a3a;
-            color: #64b5f6;
-            border-left-color: #64b5f6;
-        }
-
-        .info-banner .mode-tag {
-            display: inline-block;
-            padding: 1px 10px;
-            border-radius: 10px;
-            font-size: 10px;
-            font-weight: 600;
-            margin: 0 2px;
-        }
-        .mode-tag-iframe {
-            background: #28a745;
-            color: white;
-        }
-        .mode-tag-redirect {
-            background: #ffc107;
-            color: #333;
-        }
-        .mode-tag-popup {
-            background: #17a2b8;
-            color: white;
-        }
-        .mode-tag-proxy {
-            background: #6f42c1;
-            color: white;
-        }
-
-        .info-banner kbd {
-            background: rgba(0, 0, 0, 0.1);
-            padding: 1px 6px;
-            border-radius: 4px;
-            font-size: 10px;
-            font-family: monospace;
-        }
-        [data-theme="dark"] .info-banner kbd {
-            background: rgba(255, 255, 255, 0.1);
+            opacity: 0.6;
         }
 
         /* ============================================
@@ -525,110 +454,154 @@
                 ============================================ */
         .footer {
             text-align: center;
-            padding: 12px 20px;
-            background: var(--bg-card);
-            margin-top: 16px;
-            border-top: 1px solid var(--border-color);
+            padding: 18px 20px;
+            margin-top: 24px;
             color: var(--text-secondary);
-            font-size: 11px;
-            transition: var(--transition);
+            font-size: 12px;
+            opacity: 0.6;
+            border-top: 1px solid var(--border-color);
         }
+
         .footer a {
-            color: #0d47a1;
+            color: var(--text-secondary);
             text-decoration: none;
         }
-        [data-theme="dark"] .footer a {
-            color: #64b5f6;
+
+        .footer a:hover {
+            color: var(--text-primary);
+        }
+
+        /* ============================================
+                   TOAST NOTIFICATION
+                ============================================ */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 14px 24px;
+            border-radius: 12px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transform: translateY(120px);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 999;
+            max-width: 400px;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast .icon {
+            font-size: 24px;
+        }
+
+        .toast .msg {
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        .toast .msg small {
+            display: block;
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 300;
         }
 
         /* ============================================
                    RESPONSIVE
                 ============================================ */
-        @media (max-width: 1024px) {
-            .header-container {
+        @media (max-width: 768px) {
+            body {
+                padding: 12px;
+            }
+
+            .header {
+                padding: 18px 20px;
                 flex-direction: column;
                 text-align: center;
-                gap: 6px;
             }
-            .nav-tabs button {
-                font-size: 10px;
-                padding: 5px 10px;
-            }
-            .iframe-wrapper {
-                height: 68vh;
-            }
-        }
 
-        @media (max-width: 768px) {
             .logo h1 {
-                font-size: 17px;
+                font-size: 20px;
+                justify-content: center;
             }
-            .logo small {
-                font-size: 9px;
+
+            .logo h1 span {
+                font-size: 14px;
             }
-            .nav-tabs button {
-                font-size: 9px;
-                padding: 4px 8px;
+
+            .logo p {
+                font-size: 11px;
             }
-            .nav-tabs button .badge {
-                font-size: 7px;
-                padding: 1px 4px;
+
+            .header-actions {
+                width: 100%;
+                justify-content: center;
             }
-            .nav-tabs button .mode-label {
-                font-size: 7px;
+
+            .stats-badge {
+                font-size: 11px;
+                padding: 6px 14px;
             }
-            .iframe-wrapper {
-                height: 60vh;
+
+            .province-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 14px;
             }
-            .btn-primary,
-            .btn-secondary {
-                padding: 8px 16px;
-                font-size: 12px;
+
+            .province-card {
+                padding: 18px 16px;
             }
-            .blocked-info .icon {
-                font-size: 36px;
+
+            .province-card .card-header .emoji {
+                font-size: 28px;
             }
-            .blocked-info h2 {
-                font-size: 17px;
+
+            .province-card .card-header .name {
+                font-size: 15px;
             }
+
+            .province-card .card-footer .popup-btn {
+                font-size: 11px;
+                padding: 6px 14px;
+            }
+
+            .grid-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .grid-controls .filter-label input {
+                width: 100%;
+            }
+
             .history-list {
-                max-height: 36px;
+                max-height: 40px;
             }
         }
 
         @media (max-width: 480px) {
-            .header-container {
-                padding: 0 8px;
+            .province-grid {
+                grid-template-columns: 1fr;
             }
-            .nav-tabs button {
+
+            .province-card .card-header .badge {
                 font-size: 8px;
-                padding: 3px 6px;
-                border-radius: 4px;
+                padding: 1px 8px;
             }
-            .nav-tabs button .badge {
-                display: none;
-            }
-            .nav-tabs button .mode-label {
-                font-size: 6px;
-            }
-            .iframe-wrapper {
-                height: 50vh;
-            }
-            .btn-group {
-                flex-direction: column;
-                align-items: center;
-            }
-            .btn-primary,
-            .btn-secondary {
-                padding: 6px 14px;
-                font-size: 11px;
-            }
-            .info-banner {
-                font-size: 10px;
-                padding: 8px 12px;
-            }
-            .history-header h3 {
-                font-size: 11px;
+
+            .toast {
+                left: 16px;
+                right: 16px;
+                bottom: 16px;
+                padding: 12px 16px;
             }
         }
     </style>
@@ -639,497 +612,446 @@
     HEADER
     ============================================ -->
     <header class="header">
-        <div class="header-container">
-            <div class="logo">
-                <h1>🚗 Cek Pajak <span style="font-size:13px;font-weight:300;opacity:0.7;">Indonesia</span></h1>
-                <small>9 Provinsi · 4 Mode Akses</small>
+        <div class="logo">
+            <h1>
+                🚗 CekPajak<span>.id</span>
+            </h1>
+            <p>Portal Cepat Pajak Kendaraan • 10 Provinsi</p>
+        </div>
+        <div class="header-actions">
+            <div class="stats-badge">
+                📋 <span id="totalProvinsi">10</span> Provinsi
             </div>
-
-            <div class="header-actions">
-                <button class="theme-toggle" id="themeToggle" title="Ganti Tema">🌙</button>
-
-                <div class="nav-tabs-wrapper">
-                    <div class="nav-tabs" id="navTabs">
-                        <!-- 1. DIY Sleman - IFRAME -->
-                        <button class="active" data-type="iframe" data-url="https://samsatsleman.jogjaprov.go.id/cek/pajak" data-name="DIY Sleman">
-                            🟡 Sleman <span class="badge badge-iframe">IFRAME</span>
-                            <span class="mode-label">✅ langsung</span>
-                        </button>
-
-                        <!-- 2. Banten - REDIRECT -->
-                        <button data-type="redirect" data-url="https://infopkb.bantenprov.go.id/index.php" data-name="Banten">
-                            🟢 Banten <span class="badge badge-redirect">REDIRECT</span>
-                            <span class="mode-label">↗️ buka</span>
-                        </button>
-
-                        <!-- 3. Jakarta - POPUP -->
-                        <button data-type="popup" data-url="https://samsat-pkb2.jakarta.go.id/" data-name="DKI Jakarta">
-                            🔵 Jakarta <span class="badge badge-popup">POPUP</span>
-                            <span class="mode-label">🪟 popup</span>
-                        </button>
-
-                        <!-- 4. Banten - PROXY -->
-                        <button data-type="proxy" data-url="https://infopkb.bantenprov.go.id/index.php" data-name="Banten (Proxy)">
-                            🟡 Banten <span class="badge badge-proxy">PROXY</span>
-                            <span class="mode-label">🔧 proxy</span>
-                        </button>
-
-                        <!-- 5. Jambi - REDIRECT -->
-                        <button data-type="redirect" data-url="https://jambisamsat.net/infopkb.html" data-name="Jambi">
-                            🟣 Jambi <span class="badge badge-redirect">REDIRECT</span>
-                            <span class="mode-label">↗️ buka</span>
-                        </button>
-
-                        <!-- 6. Jawa Timur - IFRAME -->
-                        <button data-type="iframe" data-url="https://bapenda.jatimprov.go.id/info/pkb" data-name="Jawa Timur">
-                            🔴 Jatim <span class="badge badge-iframe">IFRAME</span>
-                            <span class="mode-label">✅ langsung</span>
-                        </button>
-
-                        <!-- 7. Lampung - IFRAME -->
-                        <button data-type="iframe" data-url="https://ipesat.bapenda.lampungprov.go.id/infopajak" data-name="Lampung">
-                            🟠 Lampung <span class="badge badge-iframe">IFRAME</span>
-                            <span class="mode-label">✅ langsung</span>
-                        </button>
-
-                        <!-- 8. Kalimantan Timur - IFRAME -->
-                        <button data-type="iframe" data-url="http://simpator.kaltimprov.go.id/cari.php" data-name="Kaltim">
-                            🟤 Kaltim <span class="badge badge-iframe">IFRAME</span>
-                            <span class="mode-label">✅ langsung</span>
-                        </button>
-
-                        <!-- 9. Riau - IFRAME -->
-                        <button data-type="iframe" data-url="https://bapenda.riau.go.id/dashboard/layanan/infopajak" data-name="Riau">
-                            🔷 Riau <span class="badge badge-iframe">IFRAME</span>
-                            <span class="mode-label">✅ langsung</span>
-                        </button>
-
-                        <!-- 10. Jawa Barat - IFRAME -->
-                        <button data-type="iframe" data-url="https://bapenda.jabarprov.go.id/infopkb/" data-name="Jawa Barat">
-                            🟦 Jabar <span class="badge badge-iframe">IFRAME</span>
-                            <span class="mode-label">✅ langsung</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
+            <button class="theme-toggle" id="themeToggle" title="Ganti Tema">🌙</button>
         </div>
     </header>
 
     <!-- ============================================
-    MAIN CONTENT
+    GRID CONTROLS
     ============================================ -->
-    <main class="main-content">
-
-        <!-- Proxy Warning -->
-        <div class="proxy-warning" id="proxyWarning">
-            ⚠️ <strong>Mode Proxy:</strong> Hanya untuk uji coba. CAPTCHA & form submission mungkin tidak stabil.
-            <button onclick="document.getElementById('proxyWarning').classList.remove('active')"
-            style="margin-left:auto; background:none; border:none; cursor:pointer; font-size:16px;">✕</button>
+    <div class="grid-controls">
+        <div class="filter-label">
+            🔍 Cari provinsi
+            <input type="text" id="searchInput" placeholder="Ketik nama provinsi...">
         </div>
-
-        <!-- IFRAME WRAPPER -->
-        <div class="iframe-wrapper" id="iframeWrapper">
-            <div class="loading" id="loading">
-                <div class="spinner"></div>
-                <p>⏳ Memuat layanan ...</p>
-            </div>
-
-            <div class="blocked-info" id="blockedInfo">
-                <div class="icon">🔒</div>
-                <h2>⚠️ Tidak Bisa Di-IFRAME</h2>
-                <p>Website <strong id="blockedName">[Provinsi]</strong> melarang halaman mereka ditampilkan di dalam bingkai (iframe).</p>
-                <div class="btn-group">
-                    <a href="#" id="openDirectBtn" class="btn-primary" target="_self">📂 Buka Halaman</a>
-                    <button id="openPopupBtn" class="btn-secondary">🪟 Buka Popup</button>
-                </div>
-                <p style="margin-top:12px; font-size:11px; opacity:0.6;">⚡ Redirect = di tab sama · Popup = window baru</p>
-            </div>
-
-            <iframe id="mainIframe" src="https://samsatsleman.jogjaprov.go.id/cek/pajak"
-            allow="accelerometer; camera; encrypted-media; geolocation; gyroscope; microphone"
-        loading="lazy"></iframe>
+        <div class="view-toggle">
+            <button class="active" data-view="grid">📐 Grid</button>
+            <button data-view="list">📋 Daftar</button>
+        </div>
     </div>
 
-    <!-- INFO BANNER -->
-    <div class="info-banner" id="infoBanner">
-        <strong>📌 Mode:</strong>
-        <span class="mode-tag mode-tag-iframe" id="currentModeTag">IFRAME</span>
-        <span id="currentModeDesc">Menampilkan langsung di halaman ini</span>
-        &nbsp;·&nbsp;
-        <strong>⌨️ Shortcut:</strong>
-        <kbd>1</kbd> Sleman <kbd>2</kbd> Banten <kbd>3</kbd> Jakarta <kbd>4</kbd> Proxy
-        <kbd>5</kbd> Jambi <kbd>6</kbd> Jatim <kbd>7</kbd> Lampung <kbd>8</kbd> Kaltim <kbd>9</kbd> Riau <kbd>0</kbd> Jabar
+    <!-- ============================================
+    PROVINCE GRID
+    ============================================ -->
+    <div class="province-grid" id="provinceGrid">
+        <!-- Akan diisi oleh JavaScript -->
     </div>
 
-    <!-- HISTORY -->
-    <div class="history-section" id="historySection">
+    <!-- ============================================
+    HISTORY
+    ============================================ -->
+    <div class="history-section">
         <div class="history-header">
-            <h3>📜 Riwayat Pencarian</h3>
+            <h3>📜 Riwayat Popup</h3>
             <button class="clear-btn" id="clearHistory">🗑️ Kosongkan</button>
         </div>
         <div class="history-list" id="historyList">
             <div class="history-empty">Belum ada riwayat.</div>
         </div>
     </div>
-</main>
 
-<!-- ============================================
-FOOTER
-============================================ -->
-<footer class="footer">
-    <p>
-        © 2026 Portal Cek Pajak Terpadu ·
-        Sumber: <a href="https://samsatsleman.jogjaprov.go.id/cek/pajak" target="_blank">DIY</a>,
-        <a href="https://infopkb.bantenprov.go.id/index.php" target="_blank">Banten</a>,
-        <a href="https://samsat-pkb2.jakarta.go.id/" target="_blank">Jakarta</a>,
-        <a href="https://jambisamsat.net/infopkb.html" target="_blank">Jambi</a>,
-        <a href="https://bapenda.jatimprov.go.id/info/pkb" target="_blank">Jatim</a>,
-        <a href="https://ipesat.bapenda.lampungprov.go.id/infopajak" target="_blank">Lampung</a>,
-        <a href="http://simpator.kaltimprov.go.id/cari.php" target="_blank">Kaltim</a>,
-        <a href="https://bapenda.riau.go.id/dashboard/layanan/infopajak" target="_blank">Riau</a>,
-        <a href="https://bapenda.jabarprov.go.id/infopkb/" target="_blank">Jabar</a> ·
-        <span id="versionInfo">v3.0 · 9 Provinsi</span>
-    </p>
-</footer>
+    <!-- ============================================
+    TOAST
+    ============================================ -->
+    <div class="toast" id="toast">
+        <span class="icon">🪟</span>
+        <div class="msg">
+            Membuka popup...
+            <small id="toastProvince">Provinsi</small>
+        </div>
+    </div>
 
-<!-- ============================================
-JAVASCRIPT
-============================================ -->
-<script>
-    (function() {
-        'use strict';
+    <!-- ============================================
+    FOOTER
+    ============================================ -->
+    <footer class="footer">
+        <p>
+            © 2026 CekPajak.id · Dibuat dengan ❤️ · 
+            Semua data dari website resmi SAMSAT Provinsi
+        </p>
+    </footer>
 
-        // ============================================
-        // DOM REFS
-        // ============================================
-        const iframe = document.getElementById('mainIframe');
-        const loading = document.getElementById('loading');
-        const blockedInfo = document.getElementById('blockedInfo');
-        const openDirectBtn = document.getElementById('openDirectBtn');
-        const openPopupBtn = document.getElementById('openPopupBtn');
-        const blockedName = document.getElementById('blockedName');
-        const buttons = document.querySelectorAll('.nav-tabs button');
-        const themeToggle = document.getElementById('themeToggle');
-        const historyList = document.getElementById('historyList');
-        const clearHistoryBtn = document.getElementById('clearHistory');
-        const proxyWarning = document.getElementById('proxyWarning');
-        const currentModeTag = document.getElementById('currentModeTag');
-        const currentModeDesc = document.getElementById('currentModeDesc');
+    <!-- ============================================
+    JAVASCRIPT
+    ============================================ -->
+    <script>
+        (function() {
+            'use strict';
 
-        // ============================================
-        // STATE
-        // ============================================
-        let currentUrl = 'https://samsatsleman.jogjaprov.go.id/cek/pajak';
-        let currentType = 'iframe';
-        let currentName = 'DIY Sleman';
-        let isLoading = false;
-        let history = JSON.parse(localStorage.getItem('pajakHistory') || '[]');
+            // ============================================
+            // DATA PROVINSI (SEMUA POPUP)
+            // ============================================
+            const provinces = [{
+                id: 1,
+                name: 'DIY Sleman',
+                emoji: '🟡',
+                url: 'https://samsatsleman.jogjaprov.go.id/cek/pajak',
+                desc: 'Cek pajak kendaraan DIY Sleman',
+                shortcut: '1'
+            }, {
+                id: 2,
+                name: 'Banten',
+                emoji: '🟢',
+                url: 'https://infopkb.bantenprov.go.id/index.php',
+                desc: 'Informasi PKB Provinsi Banten',
+                shortcut: '2'
+            }, {
+                id: 3,
+                name: 'DKI Jakarta',
+                emoji: '🔵',
+                url: 'https://samsat-pkb2.jakarta.go.id/',
+                desc: 'Samsat PKB DKI Jakarta (dengan CAPTCHA)',
+                shortcut: '3'
+            }, {
+                id: 4,
+                name: 'Jambi',
+                emoji: '🟣',
+                url: 'https://jambisamsat.net/infopkb.html',
+                desc: 'Informasi PKB Provinsi Jambi',
+                shortcut: '4'
+            }, {
+                id: 5,
+                name: 'Jawa Timur',
+                emoji: '🔴',
+                url: 'https://bapenda.jatimprov.go.id/info/pkb',
+                desc: 'Info pajak kendaraan Jawa Timur',
+                shortcut: '5'
+            }, {
+                id: 6,
+                name: 'Lampung',
+                emoji: '🟠',
+                url: 'https://ipesat.bapenda.lampungprov.go.id/infopajak',
+                desc: 'Informasi pajak SAMSAT Lampung',
+                shortcut: '6'
+            }, {
+                id: 7,
+                name: 'Kalimantan Timur',
+                emoji: '🟤',
+                url: 'http://simpator.kaltimprov.go.id/cari.php',
+                desc: 'Info pajak kendaraan Kaltim',
+                shortcut: '7'
+            }, {
+                id: 8,
+                name: 'Riau',
+                emoji: '🔷',
+                url: 'https://bapenda.riau.go.id/dashboard/layanan/infopajak',
+                desc: 'Bapenda Riau - layanan info pajak',
+                shortcut: '8'
+            }, {
+                id: 9,
+                name: 'Jawa Barat',
+                emoji: '🟦',
+                url: 'https://bapenda.jabarprov.go.id/infopkb/',
+                desc: 'Info PKB Jawa Barat - Bapenda Jabar',
+                shortcut: '9'
+            }, {
+                id: 10,
+                name: 'Sumatera Selatan',
+                emoji: '🟩',
+                url: 'https://bapenda.sumselprov.go.id/infopajak',
+                desc: 'Info pajak kendaraan Sumsel',
+                shortcut: '0'
+            }];
 
-        // ============================================
-        // FUNGSI UTAMA
-        // ============================================
+            // ============================================
+            // STATE
+            // ============================================
+            let currentView = 'grid';
+            let searchQuery = '';
+            let history = JSON.parse(localStorage.getItem('popupHistory') || '[]');
+            let darkMode = localStorage.getItem('darkModePopup') === 'true';
+            let toastTimeout = null;
 
-        function resetDisplay() {
-            iframe.style.display = 'none';
-            blockedInfo.classList.remove('active');
-            loading.classList.remove('active');
-            proxyWarning.classList.remove('active');
-        }
+            // ============================================
+            // DOM REFS
+            // ============================================
+            const grid = document.getElementById('provinceGrid');
+            const searchInput = document.getElementById('searchInput');
+            const viewButtons = document.querySelectorAll('.view-toggle button');
+            const historyList = document.getElementById('historyList');
+            const clearHistoryBtn = document.getElementById('clearHistory');
+            const themeToggle = document.getElementById('themeToggle');
+            const toast = document.getElementById('toast');
+            const toastProvince = document.getElementById('toastProvince');
 
-        function updateModeInfo(type, name) {
-            const modeMap = {
-                'iframe': { tag: 'IFRAME', cls: 'mode-tag-iframe', desc: 'Menampilkan langsung di halaman ini' },
-                'redirect': { tag: 'REDIRECT', cls: 'mode-tag-redirect', desc: 'Berpindah ke halaman resmi' },
-                'popup': { tag: 'POPUP', cls: 'mode-tag-popup', desc: 'Membuka di window popup' },
-                'proxy': { tag: 'PROXY', cls: 'mode-tag-proxy', desc: 'Menggunakan proxy (uji coba)' }
-            };
-            const info = modeMap[type] || modeMap['iframe'];
-            currentModeTag.textContent = info.tag;
-            currentModeTag.className = 'mode-tag ' + info.cls;
-            currentModeDesc.textContent = info.desc + (name ? ` · ${name}` : '');
-        }
+            // ============================================
+            // FUNGSI POPUP
+            // ============================================
+            function openPopup(url, name) {
+                // Popup settings
+                const width = Math.min(1200, window.screen.width - 40);
+                const height = Math.min(800, window.screen.height - 40);
+                const left = (window.screen.width - width) / 2;
+                const top = (window.screen.height - height) / 2;
 
-        function addHistory(url, name, type) {
-            const entry = { url, name, type, timestamp: new Date().toLocaleString('id-ID') };
-            history = history.filter(h => h.url !== url);
-            history.unshift(entry);
-            if (history.length > 30) history.pop();
-            localStorage.setItem('pajakHistory', JSON.stringify(history));
-            renderHistory();
-        }
+                const popup = window.open(
+                    url,
+                    'cekpajak_' + Date.now(),
+                    `width=${width},height=${height},left=${left},top=${top},scrollbars=yes,resizable=yes,menubar=no,toolbar=no,location=yes,status=no`
+                );
 
-        function renderHistory() {
-            if (history.length === 0) {
-                historyList.innerHTML = '<div class="history-empty">Belum ada riwayat.</div>';
-                return;
+                if (popup) {
+                    popup.focus();
+                    // Tambah riwayat
+                    addHistory(url, name);
+                    showToast('🪟', `Membuka ${name}`, 'Popup berhasil dibuka');
+                } else {
+                    alert('⚠️ Popup diblokir browser! Izinkan popup untuk website ini.\n\nAtau klik kanan link → Buka di tab baru.');
+                    showToast('⚠️', 'Popup diblokir!', 'Izinkan popup di browser Anda');
+                }
             }
-            historyList.innerHTML = history.map((item, index) => `
-                        <span class="chip" data-index="${index}" title="${item.timestamp}">
-                            ${item.name || '❓'} 
-                            <span style="font-size:8px; opacity:0.5;">${item.type || ''}</span>
-                            <span class="remove" data-index="${index}">×</span>
-                        </span>
-                    `).join('');
 
-            document.querySelectorAll('.history-list .chip').forEach(chip => {
-                chip.addEventListener('click', function(e) {
-                    if (e.target.classList.contains('remove')) return;
-                    const index = parseInt(this.dataset.index);
-                    const item = history[index];
-                    if (item) {
-                        buttons.forEach(btn => {
-                            if (btn.getAttribute('data-url') === item.url) {
-                                btn.click();
+            // ============================================
+            // RENDER GRID
+            // ============================================
+            function renderProvinces() {
+                const filtered = provinces.filter(p =>
+                    p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    p.desc.toLowerCase().includes(searchQuery.toLowerCase())
+                );
+
+                if (filtered.length === 0) {
+                    grid.innerHTML = `
+                                <div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--text-secondary);">
+                                    <div style="font-size:48px;margin-bottom:16px;">🔍</div>
+                                    <h3 style="font-weight:400;">Tidak ditemukan</h3>
+                                    <p style="font-size:14px;opacity:0.6;">Coba kata kunci lain</p>
+                                </div>
+                            `;
+                    return;
+                }
+
+                grid.className = 'province-grid ' + (currentView === 'list' ? 'list-view' : '');
+
+                grid.innerHTML = filtered.map(p => `
+                            <div class="province-card" data-id="${p.id}">
+                                <div class="card-header">
+                                    <span class="emoji">${p.emoji}</span>
+                                    <span class="name">${p.name}</span>
+                                    <span class="badge">POPUP</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="url">${p.url.replace(/^https?:\/\//, '')}</div>
+                                    <div class="desc">${p.desc}</div>
+                                </div>
+                                <div class="card-footer">
+                                    <button class="popup-btn" data-url="${p.url}" data-name="${p.name}">
+                                        🪟 Buka Popup
+                                    </button>
+                                    <span class="shortcut">⌨️ ${p.shortcut}</span>
+                                </div>
+                            </div>
+                        `).join('');
+
+                // Event listener untuk tombol popup
+                document.querySelectorAll('.popup-btn').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const url = this.dataset.url;
+                        const name = this.dataset.name;
+                        openPopup(url, name);
+                    });
+                });
+
+                // Event listener untuk card (klik card = buka popup)
+                document.querySelectorAll('.province-card').forEach(card => {
+                    card.addEventListener('click', function() {
+                        const btn = this.querySelector('.popup-btn');
+                        if (btn) {
+                            const url = btn.dataset.url;
+                            const name = btn.dataset.name;
+                            openPopup(url, name);
+                        }
+                    });
+                });
+            }
+
+            // ============================================
+            // HISTORY
+            // ============================================
+            function addHistory(url, name) {
+                const entry = { url, name, timestamp: new Date().toLocaleString('id-ID') };
+                history = history.filter(h => h.url !== url);
+                history.unshift(entry);
+                if (history.length > 30) history.pop();
+                localStorage.setItem('popupHistory', JSON.stringify(history));
+                renderHistory();
+            }
+
+            function renderHistory() {
+                if (history.length === 0) {
+                    historyList.innerHTML = '<div class="history-empty">Belum ada riwayat.</div>';
+                    return;
+                }
+
+                historyList.innerHTML = history.map((item, index) => `
+                            <span class="chip" data-index="${index}" title="${item.timestamp}">
+                                ${item.name || '❓'} 
+                                <span class="remove" data-index="${index}">×</span>
+                            </span>
+                        `).join('');
+
+                // Klik chip = buka popup
+                document.querySelectorAll('.history-list .chip').forEach(chip => {
+                    chip.addEventListener('click', function(e) {
+                        if (e.target.classList.contains('remove')) return;
+                        const index = parseInt(this.dataset.index);
+                        const item = history[index];
+                        if (item) {
+                            openPopup(item.url, item.name);
+                        }
+                    });
+                });
+
+                // Tombol hapus per item
+                document.querySelectorAll('.history-list .remove').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const index = parseInt(this.dataset.index);
+                        history.splice(index, 1);
+                        localStorage.setItem('popupHistory', JSON.stringify(history));
+                        renderHistory();
+                    });
+                });
+            }
+
+            // ============================================
+            // TOAST
+            // ============================================
+            function showToast(icon, msg, sub) {
+                clearTimeout(toastTimeout);
+                toast.querySelector('.icon').textContent = icon;
+                toast.querySelector('.msg').innerHTML = msg + (sub ? `<small>${sub}</small>` : '');
+                toast.classList.add('show');
+
+                toastTimeout = setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            }
+
+            // ============================================
+            // THEME
+            // ============================================
+            function applyTheme() {
+                if (darkMode) {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    themeToggle.textContent = '☀️';
+                } else {
+                    document.documentElement.removeAttribute('data-theme');
+                    themeToggle.textContent = '🌙';
+                }
+                localStorage.setItem('darkModePopup', String(darkMode));
+            }
+
+            themeToggle.addEventListener('click', function() {
+                darkMode = !darkMode;
+                applyTheme();
+            });
+
+            // ============================================
+            // SEARCH
+            // ============================================
+            searchInput.addEventListener('input', function() {
+                searchQuery = this.value;
+                renderProvinces();
+            });
+
+            // ============================================
+            // VIEW TOGGLE
+            // ============================================
+            viewButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    viewButtons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentView = this.dataset.view;
+                    renderProvinces();
+                });
+            });
+
+            // ============================================
+            // CLEAR HISTORY
+            // ============================================
+            clearHistoryBtn.addEventListener('click', function() {
+                if (confirm('Hapus semua riwayat popup?')) {
+                    history = [];
+                    localStorage.removeItem('popupHistory');
+                    renderHistory();
+                    showToast('🗑️', 'Riwayat dihapus', 'Semua riwayat telah dibersihkan');
+                }
+            });
+
+            // ============================================
+            // KEYBOARD SHORTCUT (1-9, 0)
+            // ============================================
+            document.addEventListener('keydown', function(e) {
+                // Abaikan jika sedang di input
+                if (e.target.tagName === 'INPUT') return;
+
+                const key = e.key;
+                const shortcutMap = {
+                    '1': 0,
+                    '2': 1,
+                    '3': 2,
+                    '4': 3,
+                    '5': 4,
+                    '6': 5,
+                    '7': 6,
+                    '8': 7,
+                    '9': 8,
+                    '0': 9
+                };
+
+                if (key in shortcutMap) {
+                    const index = shortcutMap[key];
+                    if (provinces[index]) {
+                        const p = provinces[index];
+                        openPopup(p.url, p.name);
+                        e.preventDefault();
+
+                        // Highlight card
+                        document.querySelectorAll('.province-card').forEach((card, i) => {
+                            card.style.transition = 'all 0.2s';
+                            if (i === index) {
+                                card.style.transform = 'scale(0.96)';
+                                card.style.borderColor = '#302b63';
+                                setTimeout(() => {
+                                    card.style.transform = '';
+                                }, 300);
+                            } else {
+                                card.style.borderColor = '';
                             }
                         });
                     }
-                });
-            });
-
-            document.querySelectorAll('.history-list .remove').forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    const index = parseInt(this.dataset.index);
-                    history.splice(index, 1);
-                    localStorage.setItem('pajakHistory', JSON.stringify(history));
-                    renderHistory();
-                });
-            });
-        }
-
-        function openPopupWindow(url, name) {
-            const width = 1024,
-                height = 768;
-            const left = (window.screen.width - width) / 2;
-            const top = (window.screen.height - height) / 2;
-            const popup = window.open(
-                url,
-                'cekpajak_' + Date.now(),
-                `width=${width},height=${height},left=${left},top=${top},scrollbars=yes,resizable=yes`
-            );
-            if (popup) { popup.focus(); } else { alert('Popup diblokir browser. Izinkan popup atau gunakan mode Redirect.'); }
-        }
-
-        // ============================================
-        // SWITCH TAB (Fungsi Utama)
-        // ============================================
-        function switchTab(url, type, button, name) {
-            if (isLoading) return;
-            if (url === currentUrl && type === currentType) return;
-
-            isLoading = true;
-            resetDisplay();
-            updateModeInfo(type, name);
-
-            buttons.forEach(btn => btn.classList.remove('active'));
-            if (button) button.classList.add('active');
-
-            currentUrl = url;
-            currentType = type;
-            currentName = name || 'Provinsi';
-            addHistory(url, name, type);
-
-            // ============================================
-            // MODE IFRAME
-            // ============================================
-            if (type === 'iframe') {
-                iframe.style.display = 'block';
-                loading.classList.add('active');
-                iframe.style.opacity = '0.3';
-                iframe.src = url;
-
-                iframe.onload = function() {
-                    loading.classList.remove('active');
-                    iframe.style.opacity = '1';
-                    isLoading = false;
-                    iframe.onload = null;
-                };
-
-                setTimeout(function() {
-                    if (isLoading) {
-                        loading.classList.remove('active');
-                        iframe.style.opacity = '1';
-                        isLoading = false;
-                    }
-                }, 15000);
-
-                blockedInfo.classList.remove('active');
-
-                // ============================================
-                // MODE REDIRECT
-                // ============================================
-            } else if (type === 'redirect') {
-                blockedName.textContent = name || 'Provinsi';
-                blockedInfo.classList.add('active');
-                iframe.style.display = 'none';
-                openDirectBtn.href = url;
-                openDirectBtn.textContent = '📂 Buka ' + (name || '');
-                openPopupBtn.style.display = 'inline-flex';
-                isLoading = false;
-
-                // ============================================
-                // MODE POPUP
-                // ============================================
-            } else if (type === 'popup') {
-                openPopupWindow(url, name);
-                blockedName.textContent = name || 'Provinsi';
-                blockedInfo.classList.add('active');
-                iframe.style.display = 'none';
-                openDirectBtn.href = url;
-                openDirectBtn.textContent = '📂 Buka ' + (name || '');
-                openPopupBtn.style.display = 'inline-flex';
-                isLoading = false;
-
-                // ============================================
-                // MODE PROXY
-                // ============================================
-            } else if (type === 'proxy') {
-                proxyWarning.classList.add('active');
-                const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(url);
-
-                iframe.style.display = 'block';
-                loading.classList.add('active');
-                iframe.style.opacity = '0.3';
-                iframe.src = proxyUrl;
-
-                iframe.onload = function() {
-                    loading.classList.remove('active');
-                    iframe.style.opacity = '1';
-                    isLoading = false;
-                    iframe.onload = null;
-                };
-
-                setTimeout(function() {
-                    if (isLoading) {
-                        loading.classList.remove('active');
-                        iframe.style.opacity = '1';
-                        isLoading = false;
-                    }
-                }, 20000);
-
-                blockedInfo.classList.remove('active');
-            }
-        }
-
-        // ============================================
-        // EVENT LISTENERS
-        // ============================================
-
-        buttons.forEach(button => {
-            button.addEventListener('click', function(e) {
-                const url = this.getAttribute('data-url');
-                const type = this.getAttribute('data-type');
-                const name = this.getAttribute('data-name') ||
-                    this.textContent.replace(/[🟢🔵🟡🟣🔴🟠🟤🔷🟦]/, '').replace(/\(.*\)/, '').trim();
-                switchTab(url, type, this, name);
-            });
-        });
-
-        openDirectBtn.addEventListener('click', function(e) {
-            loading.classList.add('active');
-            setTimeout(() => loading.classList.remove('active'), 3000);
-        });
-
-        openPopupBtn.addEventListener('click', function() {
-            openPopupWindow(currentUrl, currentName);
-        });
-
-        // ============================================
-        // THEME TOGGLE
-        // ============================================
-        let darkMode = localStorage.getItem('darkMode') === 'true';
-
-        function applyTheme() {
-            if (darkMode) {
-                document.documentElement.setAttribute('data-theme', 'dark');
-                themeToggle.textContent = '☀️';
-                themeToggle.title = 'Mode Terang';
-            } else {
-                document.documentElement.removeAttribute('data-theme');
-                themeToggle.textContent = '🌙';
-                themeToggle.title = 'Mode Gelap';
-            }
-            localStorage.setItem('darkMode', String(darkMode));
-        }
-        applyTheme();
-
-        themeToggle.addEventListener('click', function() {
-            darkMode = !darkMode;
-            applyTheme();
-        });
-
-        // ============================================
-        // KEYBOARD SHORTCUT (1-0)
-        // ============================================
-        document.addEventListener('keydown', function(e) {
-            const key = e.key;
-            const tabMap = {
-                '1': 0, // Sleman
-                '2': 1, // Banten Redirect
-                '3': 2, // Jakarta Popup
-                '4': 3, // Banten Proxy
-                '5': 4, // Jambi
-                '6': 5, // Jatim
-                '7': 6, // Lampung
-                '8': 7, // Kaltim
-                '9': 8, // Riau
-                '0': 9 // Jabar
-            };
-            if (key in tabMap) {
-                const index = tabMap[key];
-                if (buttons[index]) {
-                    buttons[index].click();
-                    e.preventDefault();
                 }
-            }
-        });
+            });
 
-        // ============================================
-        // CLEAR HISTORY
-        // ============================================
-        clearHistoryBtn.addEventListener('click', function() {
-            if (confirm('Hapus semua riwayat?')) {
-                history = [];
-                localStorage.removeItem('pajakHistory');
-                renderHistory();
-            }
-        });
+            // ============================================
+            // INIT
+            // ============================================
+            applyTheme();
+            renderProvinces();
+            renderHistory();
 
-        // ============================================
-        // IFRAME ERROR HANDLER
-        // ============================================
-        iframe.onerror = function() {
-            loading.classList.remove('active');
-            iframe.style.opacity = '1';
-            isLoading = false;
-            if (currentType === 'iframe' || currentType === 'proxy') {
-                blockedName.textContent = currentName || 'Provinsi';
-                blockedInfo.classList.add('active');
-                iframe.style.display = 'none';
-                openDirectBtn.href = currentUrl;
-                openDirectBtn.textContent = '📂 Buka ' + (currentName || '');
-            }
-        };
+            // Update total provinsi
+            document.getElementById('totalProvinsi').textContent = provinces.length;
 
-        // ============================================
-        // INIT
-        // ============================================
-        renderHistory();
-        console.log('🚗 Portal Cek Pajak v3.0 · 9 Provinsi');
-        console.log('⌨️ Shortcut: 1-9,0 untuk ganti provinsi');
-        console.log('🌙 Tekan tombol bulan/matahari untuk ganti tema');
+            console.log('🚗 Portal CekPajak.id - Popup Mode');
+            console.log('📋 ' + provinces.length + ' provinsi tersedia');
+            console.log('⌨️ Shortcut: 1-9,0 untuk buka popup cepat');
+            console.log('🌙 Klik tombol bulan/matahari untuk ganti tema');
 
-        // Deteksi jika iframe Sleman gagal
-        setTimeout(() => {
-            if (isLoading) {
-                loading.classList.remove('active');
-                iframe.style.opacity = '1';
-                isLoading = false;
-            }
-        }, 10000);
-
-    })();
-</script>
+        })();
+    </script>
 
 </body>
 </html>
