@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Cek Pajak Kendaraan Indonesia</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f2f5;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1a237e, #0d47a1);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo h1 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .logo small {
+            display: block;
+            font-size: 12px;
+            opacity: 0.8;
+            font-weight: 300;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .nav-tabs button {
+            background: rgba(255,255,255,0.15);
+            color: white;
+            border: 2px solid transparent;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .nav-tabs button:hover {
+            background: rgba(255,255,255,0.25);
+            transform: translateY(-2px);
+        }
+
+        .nav-tabs button.active {
+            background: white;
+            color: #0d47a1;
+            border-color: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        .iframe-wrapper {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            overflow: hidden;
+            height: 85vh;
+            position: relative;
+        }
+
+        .iframe-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Loading */
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .loading.active {
+            display: flex;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #e0e0e0;
+            border-top: 5px solid #0d47a1;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading p {
+            color: #555;
+            font-weight: 500;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 15px 20px;
+            background: white;
+            margin-top: 20px;
+            border-top: 1px solid #e0e0e0;
+            color: #666;
+            font-size: 13px;
+        }
+
+        .footer a {
+            color: #0d47a1;
+            text-decoration: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 12px;
+                text-align: center;
+            }
+
+            .nav-tabs {
+                justify-content: center;
+            }
+
+            .nav-tabs button {
+                padding: 8px 14px;
+                font-size: 12px;
+            }
+
+            .logo h1 {
+                font-size: 20px;
+            }
+
+            .iframe-wrapper {
+                height: 80vh;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-tabs button {
+                padding: 6px 10px;
+                font-size: 11px;
+            }
+
+            .iframe-wrapper {
+                height: 75vh;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <h1>🚗 Cek Pajak Kendaraan</h1>
+                <small>Portal Terpadu • Seluruh Indonesia</small>
+            </div>
+            <div class="nav-tabs" id="navTabs">
+                <button class="active" data-url="https://samsatsleman.jogjaprov.go.id/cek/pajak">
+                    🟡 DIY Sleman
+                </button>
+                <button data-url="https://infopkb.bantenprov.go.id/index.php">
+                    🟢 Banten
+                </button>
+                <button data-url="https://samsat-pkb2.jakarta.go.id/">
+                    🔵 DKI Jakarta
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+        <div class="iframe-wrapper">
+            <!-- Loading -->
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>⏳ Memuat layanan ...</p>
+            </div>
+
+            <!-- IFRAME -->
+            <iframe 
+                id="mainIframe"
+                src="https://samsatsleman.jogjaprov.go.id/cek/pajak"
+                allow="accelerometer; camera; encrypted-media; geolocation; gyroscope; microphone"
+                loading="lazy"
+            ></iframe>
+        </div>
+
+        <!-- Informasi tambahan -->
+        <div style="margin-top: 16px; padding: 16px; background: #fff3cd; border-radius: 8px; border-left: 4px solid #ffc107;">
+            <p style="font-size: 14px; color: #856404;">
+                <strong>ℹ️ Informasi:</strong> 
+                Website ini adalah <strong>portal pengalih</strong> yang menampilkan layanan resmi dalam satu halaman. 
+                Data tetap diambil dari server resmi masing-masing provinsi. 
+                Untuk hasil akurat, gunakan data kendaraan yang valid.
+            </p>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <p>
+            © 2026 Portal Cek Pajak • 
+            Sumber data dari website resmi SAMSAT Provinsi 
+            <a href="https://samsatsleman.jogjaprov.go.id/cek/pajak" target="_blank">DIY</a>, 
+            <a href="https://infopkb.bantenprov.go.id/index.php" target="_blank">Banten</a>, dan 
+            <a href="https://samsat-pkb2.jakarta.go.id/" target="_blank">DKI Jakarta</a>
+        </p>
+    </footer>
+
+    <script>
+        (function() {
+            'use strict';
+
+            const iframe = document.getElementById('mainIframe');
+            const loading = document.getElementById('loading');
+            const buttons = document.querySelectorAll('.nav-tabs button');
+
+            let currentUrl = 'https://samsatsleman.jogjaprov.go.id/cek/pajak';
+            let isLoading = false;
+
+            // Fungsi ganti tab
+            function switchTab(url, button) {
+                if (isLoading) return;
+                if (url === currentUrl) return;
+
+                isLoading = true;
+
+                // Update active button
+                buttons.forEach(btn => btn.classList.remove('active'));
+                if (button) button.classList.add('active');
+
+                // Tampilkan loading
+                loading.classList.add('active');
+                iframe.style.opacity = '0.3';
+
+                // Ganti src iframe
+                iframe.src = url;
+                currentUrl = url;
+
+                // Sembunyikan loading setelah iframe selesai load
+                iframe.onload = function() {
+                    loading.classList.remove('active');
+                    iframe.style.opacity = '1';
+                    isLoading = false;
+                    iframe.onload = null; // prevent multiple calls
+                };
+
+                // Timeout fallback jika iframe terlalu lama
+                setTimeout(function() {
+                    if (isLoading) {
+                        loading.classList.remove('active');
+                        iframe.style.opacity = '1';
+                        isLoading = false;
+                    }
+                }, 15000);
+            }
+
+            // Event listener untuk tombol
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    const url = this.getAttribute('data-url');
+                    switchTab(url, this);
+                });
+            });
+
+            // Handle jika iframe error
+            iframe.onerror = function() {
+                loading.classList.remove('active');
+                iframe.style.opacity = '1';
+                isLoading = false;
+                alert('Gagal memuat layanan. Pastikan koneksi internet Anda aktif.');
+            };
+
+            // Keyboard shortcut: tekan 1,2,3 untuk ganti tab
+            document.addEventListener('keydown', function(e) {
+                const key = e.key;
+                const tabMap = {
+                    '1': 0, // Sleman
+                    '2': 1, // Banten
+                    '3': 2  // Jakarta
+                };
+                if (key in tabMap) {
+                    const index = tabMap[key];
+                    if (buttons[index]) {
+                        buttons[index].click();
+                        e.preventDefault();
+                    }
+                }
+            });
+
+            console.log('🚗 Portal Cek Pajak siap digunakan!');
+            console.log('💡 Tips: Tekan 1 (Sleman), 2 (Banten), atau 3 (Jakarta) untuk ganti tab cepat.');
+        })();
+    </script>
+
+</body>
+</html>
