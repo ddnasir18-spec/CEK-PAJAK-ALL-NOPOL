@@ -3,97 +3,223 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal Cek Pajak Kendaraan Indonesia</title>
+    <title>🚗 Portal Cek Pajak Kendaraan Indonesia</title>
     <style>
-        /* === SEMUA CSS SAMA SEPERTI SEBELUMNYA === */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f2f5; min-height: 100vh; }
-        
+        /* ============================================
+                   CSS VARIABLES & RESET
+                ============================================ */
+        :root {
+            --bg-primary: #f0f2f5;
+            --bg-card: #ffffff;
+            --text-primary: #1a1a2e;
+            --text-secondary: #555;
+            --shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            --radius: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --header-gradient: linear-gradient(135deg, #1a237e, #0d47a1);
+            --border-color: #e0e0e0;
+            --badge-iframe: #28a745;
+            --badge-redirect: #ffc107;
+            --badge-popup: #17a2b8;
+            --badge-proxy: #6f42c1;
+        }
+
+        /* Dark Mode */
+        [data-theme="dark"] {
+            --bg-primary: #121212;
+            --bg-card: #1e1e2e;
+            --text-primary: #e0e0e0;
+            --text-secondary: #aaa;
+            --shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+            --border-color: #333;
+            --header-gradient: linear-gradient(135deg, #0d0d2b, #1a1a4e);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            transition: var(--transition);
+        }
+
+        /* ============================================
+                   HEADER
+                ============================================ */
         .header {
-            background: linear-gradient(135deg, #1a237e, #0d47a1);
+            background: var(--header-gradient);
             color: white;
-            padding: 20px 0;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            padding: 16px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             position: sticky;
             top: 0;
             z-index: 1000;
+            transition: var(--transition);
         }
+
         .header-container {
-            max-width: 1200px;
+            max-width: 1300px;
             margin: 0 auto;
             padding: 0 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
+            gap: 12px;
         }
-        .logo h1 { font-size: 24px; font-weight: 700; }
-        .logo small { display: block; font-size: 12px; opacity: 0.8; font-weight: 300; }
-        
-        .nav-tabs { display: flex; gap: 10px; flex-wrap: wrap; }
+
+        .logo h1 {
+            font-size: 22px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo small {
+            display: block;
+            font-size: 11px;
+            opacity: 0.8;
+            font-weight: 300;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        /* ============================================
+                   THEME TOGGLE
+                ============================================ */
+        .theme-toggle {
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(20deg);
+        }
+
+        /* ============================================
+                   NAV TABS
+                ============================================ */
+        .nav-tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
         .nav-tabs button {
-            background: rgba(255,255,255,0.15);
+            background: rgba(255, 255, 255, 0.12);
             color: white;
             border: 2px solid transparent;
-            padding: 10px 20px;
+            padding: 8px 16px;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
-            transition: all 0.3s;
-        }
-        .nav-tabs button:hover { background: rgba(255,255,255,0.25); transform: translateY(-2px); }
-        .nav-tabs button.active { background: white; color: #0d47a1; border-color: white; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
-        .nav-tabs button.blocked { background: rgba(255,193,7,0.3); border-color: #ffc107; }
-        .nav-tabs button.blocked::after { content: " ⚠️"; font-size: 12px; }
-        
-        .main-content { max-width: 1200px; margin: 20px auto; padding: 0 20px; }
-        
-        .iframe-wrapper {
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
-            overflow: hidden;
-            height: 80vh;
+            transition: var(--transition);
+            white-space: nowrap;
             position: relative;
         }
+
+        .nav-tabs button:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+
+        .nav-tabs button.active {
+            background: white;
+            color: #0d47a1;
+            border-color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-tabs button .badge {
+            font-size: 9px;
+            padding: 1px 6px;
+            border-radius: 10px;
+            margin-left: 4px;
+            font-weight: 400;
+            display: inline-block;
+        }
+
+        .badge-iframe {
+            background: var(--badge-iframe);
+            color: white;
+        }
+        .badge-redirect {
+            background: var(--badge-redirect);
+            color: #333;
+        }
+        .badge-popup {
+            background: var(--badge-popup);
+            color: white;
+        }
+        .badge-proxy {
+            background: var(--badge-proxy);
+            color: white;
+        }
+
+        /* Mode indicator di tab */
+        .nav-tabs button .mode-label {
+            font-size: 9px;
+            opacity: 0.7;
+            display: block;
+            font-weight: 300;
+        }
+
+        /* ============================================
+                   MAIN CONTENT
+                ============================================ */
+        .main-content {
+            max-width: 1300px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        /* ============================================
+                   IFRAME WRAPPER
+                ============================================ */
+        .iframe-wrapper {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            height: 78vh;
+            position: relative;
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+        }
+
         .iframe-wrapper iframe {
             width: 100%;
             height: 100%;
             border: none;
         }
-        
-        /* Info box untuk yang diblokir */
-        .blocked-info {
-            display: none;
-            padding: 40px 20px;
-            text-align: center;
-            background: #fff3cd;
-            border-radius: 16px;
-            height: 100%;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        .blocked-info.active { display: flex; }
-        .blocked-info .icon { font-size: 64px; margin-bottom: 20px; }
-        .blocked-info h2 { color: #856404; margin-bottom: 10px; }
-        .blocked-info p { color: #856404; max-width: 500px; margin: 0 auto 20px; }
-        .blocked-info .btn-primary {
-            background: #0d47a1;
-            color: white;
-            padding: 12px 30px;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-decoration: none;
-            display: inline-block;
-        }
-        .blocked-info .btn-primary:hover { background: #1a237e; transform: translateY(-2px); }
-        
+
+        /* ============================================
+                   LOADING
+                ============================================ */
         .loading {
             position: absolute;
             top: 50%;
@@ -103,246 +229,887 @@
             flex-direction: column;
             align-items: center;
             gap: 15px;
+            z-index: 10;
         }
-        .loading.active { display: flex; }
+
+        .loading.active {
+            display: flex;
+        }
+
         .spinner {
             width: 50px;
             height: 50px;
-            border: 5px solid #e0e0e0;
+            border: 5px solid var(--border-color);
             border-top: 5px solid #0d47a1;
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
         }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading p {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* ============================================
+                   BLOCKED INFO (Redirect Mode)
+                ============================================ */
+        .blocked-info {
+            display: none;
+            padding: 40px 20px;
+            text-align: center;
+            background: #fff3cd;
+            border-radius: var(--radius);
+            height: 100%;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        [data-theme="dark"] .blocked-info {
+            background: #2d1f00;
+            color: #ffd970;
+        }
+
+        .blocked-info.active {
+            display: flex;
+        }
+
+        .blocked-info .icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+
+        .blocked-info h2 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        [data-theme="dark"] .blocked-info h2 {
+            color: #ffd970;
+        }
+
+        .blocked-info p {
+            color: #856404;
+            max-width: 500px;
+            margin: 0 auto 20px;
+            font-size: 15px;
+        }
+
+        [data-theme="dark"] .blocked-info p {
+            color: #ffd970;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: #0d47a1;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary:hover {
+            background: #1a237e;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(13, 71, 161, 0.4);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        /* ============================================
+                   PROXY MODE INDICATOR
+                ============================================ */
+        .proxy-warning {
+            display: none;
+            padding: 12px 20px;
+            background: #f8d7da;
+            color: #721c24;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 13px;
+            align-items: center;
+            gap: 10px;
+            border-left: 4px solid #dc3545;
+        }
+
+        [data-theme="dark"] .proxy-warning {
+            background: #2d0a0e;
+            color: #f5a3a3;
+            border-left-color: #dc3545;
+        }
+
+        .proxy-warning.active {
+            display: flex;
+        }
+
+        /* ============================================
+                   HISTORY / RIWAYAT
+                ============================================ */
+        .history-section {
+            margin-top: 16px;
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 16px 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .history-header h3 {
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-primary);
+        }
+
+        .history-header .clear-btn {
+            background: none;
+            border: none;
+            color: #dc3545;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            padding: 4px 12px;
+            border-radius: 4px;
+            transition: var(--transition);
+        }
+
+        .history-header .clear-btn:hover {
+            background: rgba(220, 53, 69, 0.1);
+        }
+
+        .history-list {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+            max-height: 60px;
+            overflow-y: auto;
+        }
+
+        .history-list .chip {
+            background: var(--bg-primary);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .history-list .chip:hover {
+            border-color: #0d47a1;
+            transform: scale(1.05);
+        }
+
+        .history-list .chip .remove {
+            color: #dc3545;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .history-list .chip .remove:hover {
+            transform: scale(1.3);
+        }
+
+        .history-empty {
+            color: var(--text-secondary);
+            font-size: 13px;
+            margin-top: 10px;
+        }
+
+        /* ============================================
+                   INFO BANNER
+                ============================================ */
+        .info-banner {
+            margin-top: 16px;
+            padding: 14px 18px;
+            background: #e3f2fd;
+            border-radius: 8px;
+            border-left: 4px solid #0d47a1;
+            font-size: 13px;
+            color: #0d47a1;
+            transition: var(--transition);
+        }
+
+        [data-theme="dark"] .info-banner {
+            background: #0a1a3a;
+            color: #64b5f6;
+            border-left-color: #64b5f6;
+        }
+
+        .info-banner strong {
+            font-weight: 600;
+        }
+
+        .info-banner .mode-tag {
+            display: inline-block;
+            padding: 2px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            margin: 0 2px;
+        }
+
+        .mode-tag-iframe {
+            background: #28a745;
+            color: white;
+        }
+        .mode-tag-redirect {
+            background: #ffc107;
+            color: #333;
+        }
+        .mode-tag-popup {
+            background: #17a2b8;
+            color: white;
+        }
+        .mode-tag-proxy {
+            background: #6f42c1;
+            color: white;
+        }
+
+        /* ============================================
+                   FOOTER
+                ============================================ */
         .footer {
             text-align: center;
             padding: 15px 20px;
-            background: white;
+            background: var(--bg-card);
             margin-top: 20px;
-            border-top: 1px solid #e0e0e0;
-            color: #666;
-            font-size: 13px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 12px;
+            transition: var(--transition);
         }
-        .footer a { color: #0d47a1; text-decoration: none; }
 
-        /* ===== INFO BADGE ===== */
-        .badge {
-            display: inline-block;
-            font-size: 10px;
-            padding: 2px 8px;
-            border-radius: 12px;
-            margin-left: 5px;
-            font-weight: 400;
+        .footer a {
+            color: #0d47a1;
+            text-decoration: none;
         }
-        .badge-green { background: #28a745; color: white; }
-        .badge-red { background: #dc3545; color: white; }
-        .badge-yellow { background: #ffc107; color: #333; }
 
-        @media (max-width: 768px) {
-            .header-container { flex-direction: column; gap: 12px; text-align: center; }
-            .nav-tabs { justify-content: center; }
-            .nav-tabs button { padding: 8px 14px; font-size: 12px; }
-            .logo h1 { font-size: 20px; }
-            .iframe-wrapper { height: 70vh; }
+        [data-theme="dark"] .footer a {
+            color: #64b5f6;
+        }
+
+        /* ============================================
+                   RESPONSIVE
+                ============================================ */
+        @media (max-width: 992px) {
+            .header-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            .nav-tabs {
+                justify-content: center;
+            }
+            .nav-tabs button {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+            .iframe-wrapper {
+                height: 70vh;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .logo h1 {
+                font-size: 18px;
+            }
+            .nav-tabs button {
+                font-size: 10px;
+                padding: 5px 10px;
+            }
+            .nav-tabs button .badge {
+                font-size: 7px;
+                padding: 1px 4px;
+            }
+            .nav-tabs button .mode-label {
+                font-size: 7px;
+            }
+            .iframe-wrapper {
+                height: 60vh;
+            }
+            .btn-primary,
+            .btn-secondary {
+                padding: 10px 20px;
+                font-size: 13px;
+            }
+            .blocked-info .icon {
+                font-size: 40px;
+            }
+            .history-list {
+                max-height: 40px;
+            }
+            .header-actions {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .nav-tabs button {
+                font-size: 9px;
+                padding: 4px 8px;
+            }
+            .iframe-wrapper {
+                height: 50vh;
+            }
+            .btn-group {
+                flex-direction: column;
+                align-items: center;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- HEADER -->
+    <!-- ============================================
+    HEADER
+    ============================================ -->
     <header class="header">
         <div class="header-container">
             <div class="logo">
-                <h1>🚗 Cek Pajak Kendaraan</h1>
-                <small>Portal Terpadu • Seluruh Indonesia</small>
+                <h1>
+                    🚗 Cek Pajak
+                    <span style="font-size:14px; font-weight:300; opacity:0.7;">Indonesia</span>
+                </h1>
+                <small>Portal Terpadu • 3 Provinsi • 4 Mode Akses</small>
             </div>
-            <div class="nav-tabs" id="navTabs">
-                <button class="active" data-type="iframe" data-url="https://samsatsleman.jogjaprov.go.id/cek/pajak">
-                    🟡 DIY Sleman <span class="badge badge-green">IFRAME</span>
+
+            <div class="header-actions">
+                <!-- Theme Toggle -->
+                <button class="theme-toggle" id="themeToggle" title="Ganti Tema">
+                    🌙
                 </button>
-                <button data-type="redirect" data-url="https://infopkb.bantenprov.go.id/index.php">
-                    🟢 Banten <span class="badge badge-yellow">BUKA HALAMAN</span>
+
+                <!-- NAV TABS -->
+                <div class="nav-tabs" id="navTabs">
+                    <!-- SLEMAN - IFRAME -->
+                    <button class="active"
+                    data-type="iframe"
+                    data-url="https://samsatsleman.jogjaprov.go.id/cek/pajak"
+                    data-name="DIY Sleman">
+                    🟡 Sleman
+                    <span class="badge badge-iframe">IFRAME</span>
+                    <span class="mode-label">✅ langsung</span>
                 </button>
-                <button data-type="redirect" data-url="https://samsat-pkb2.jakarta.go.id/">
-                    🔵 DKI Jakarta <span class="badge badge-yellow">BUKA HALAMAN</span>
-                </button>
-            </div>
-        </div>
-    </header>
 
-    <!-- MAIN CONTENT -->
-    <main class="main-content">
-        <div class="iframe-wrapper" id="iframeWrapper">
-            <!-- Loading -->
-            <div class="loading" id="loading">
-                <div class="spinner"></div>
-                <p>⏳ Memuat layanan ...</p>
-            </div>
+                <!-- BANTEN - REDIRECT -->
+                <button data-type="redirect"
+                data-url="https://infopkb.bantenprov.go.id/index.php"
+                data-name="Banten">
+                🟢 Banten
+                <span class="badge badge-redirect">REDIRECT</span>
+                <span class="mode-label">↗️ buka halaman</span>
+            </button>
 
-            <!-- Info Blokir (untuk redirect) -->
-            <div class="blocked-info" id="blockedInfo">
-                <div class="icon">🔒</div>
-                <h2>Layanan Ini Tidak Bisa Di-IFRAME</h2>
-                <p>
-                    Website resmi <strong id="blockedName">[Nama Provinsi]</strong> 
-                    memiliki kebijakan keamanan yang melarang halaman mereka ditampilkan 
-                    di dalam bingkai (iframe).
-                </p>
-                <a href="#" id="openDirectBtn" class="btn-primary" target="_self">
-                    📂 Buka Halaman Langsung
-                </a>
-                <p style="margin-top: 15px; font-size: 13px; opacity: 0.7;">
-                    ⚡ Halaman akan terbuka di tab/ window yang sama
-                </p>
-            </div>
+            <!-- JAKARTA - POPUP -->
+            <button data-type="popup"
+            data-url="https://samsat-pkb2.jakarta.go.id/"
+            data-name="DKI Jakarta">
+            🔵 Jakarta
+            <span class="badge badge-popup">POPUP</span>
+            <span class="mode-label">🪟 window baru</span>
+        </button>
 
-            <!-- IFRAME (hanya untuk Sleman) -->
-            <iframe 
-                id="mainIframe"
-                src="https://samsatsleman.jogjaprov.go.id/cek/pajak"
-                allow="accelerometer; camera; encrypted-media; geolocation; gyroscope; microphone"
-                loading="lazy"
-            ></iframe>
-        </div>
+        <!-- BANTEN - PROXY (opsi 3) -->
+        <button data-type="proxy"
+        data-url="https://infopkb.bantenprov.go.id/index.php"
+        data-name="Banten (Proxy)">
+        🟡 Banten
+        <span class="badge badge-proxy">PROXY</span>
+        <span class="mode-label">🔧 via proxy</span>
+    </button>
+</div>
+</div>
+</div>
+</header>
 
-        <!-- Informasi tambahan -->
-        <div style="margin-top: 16px; padding: 16px; background: #e3f2fd; border-radius: 8px; border-left: 4px solid #0d47a1;">
-            <p style="font-size: 14px; color: #0d47a1;">
-                <strong>ℹ️ Informasi:</strong> 
-                <span style="background: #28a745; color: white; padding: 2px 10px; border-radius: 4px; font-size: 12px;">IFRAME</span> = Tampil di dalam halaman ini.
-                <span style="background: #ffc107; color: #333; padding: 2px 10px; border-radius: 4px; font-size: 12px;">BUKA HALAMAN</span> = Berpindah ke halaman resmi (karena diblokir).
-            </p>
-        </div>
-    </main>
+<!-- ============================================
+MAIN CONTENT
+============================================ -->
+<main class="main-content">
 
-    <!-- FOOTER -->
-    <footer class="footer">
+    <!-- Proxy Warning -->
+    <div class="proxy-warning" id="proxyWarning">
+        ⚠️ <strong>Mode Proxy:</strong> Hanya untuk uji coba. CAPTCHA & form submission mungkin tidak berfungsi optimal.
+        <button onclick="document.getElementById('proxyWarning').classList.remove('active')"
+        style="margin-left:auto; background:none; border:none; cursor:pointer; font-size:18px;">
+        ✕
+    </button>
+</div>
+
+<!-- IFRAME WRAPPER -->
+<div class="iframe-wrapper" id="iframeWrapper">
+    <!-- Loading -->
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <p>⏳ Memuat layanan ...</p>
+    </div>
+
+    <!-- Blocked Info (untuk redirect) -->
+    <div class="blocked-info" id="blockedInfo">
+        <div class="icon">🔒</div>
+        <h2>⚠️ Tidak Bisa Di-IFRAME</h2>
         <p>
-            © 2026 Portal Cek Pajak • 
-            Sumber data dari website resmi SAMSAT Provinsi 
-            <a href="https://samsatsleman.jogjaprov.go.id/cek/pajak" target="_blank">DIY</a>, 
-            <a href="https://infopkb.bantenprov.go.id/index.php" target="_blank">Banten</a>, dan 
-            <a href="https://samsat-pkb2.jakarta.go.id/" target="_blank">DKI Jakarta</a>
+            Website <strong id="blockedName">[Provinsi]</strong> memiliki kebijakan keamanan
+            yang melarang halaman mereka ditampilkan di dalam bingkai (iframe).
         </p>
-    </footer>
+        <div class="btn-group">
+            <a href="#" id="openDirectBtn" class="btn-primary" target="_self">
+                📂 Buka Halaman Langsung
+            </a>
+            <button id="openPopupBtn" class="btn-secondary">
+                🪟 Buka di Popup
+            </button>
+        </div>
+        <p style="margin-top:15px; font-size:12px; opacity:0.6;">
+            ⚡ Halaman akan terbuka di tab/window yang sama untuk Redirect,
+            atau di popup window untuk Popup
+        </p>
+    </div>
 
-    <script>
-        (function() {
-            'use strict';
+    <!-- IFRAME UTAMA -->
+    <iframe
+    id="mainIframe"
+    src="https://samsatsleman.jogjaprov.go.id/cek/pajak"
+    allow="accelerometer; camera; encrypted-media; geolocation; gyroscope; microphone"
+    loading="lazy"
+></iframe>
+</div>
 
-            const iframe = document.getElementById('mainIframe');
-            const loading = document.getElementById('loading');
-            const blockedInfo = document.getElementById('blockedInfo');
-            const wrapper = document.getElementById('iframeWrapper');
-            const openDirectBtn = document.getElementById('openDirectBtn');
-            const blockedName = document.getElementById('blockedName');
-            const buttons = document.querySelectorAll('.nav-tabs button');
+<!-- ============================================
+INFO BANNER
+============================================ -->
+<div class="info-banner" id="infoBanner">
+    <strong>📌 Mode Aktif:</strong>
+    <span class="mode-tag mode-tag-iframe" id="currentModeTag">IFRAME</span>
+    <span id="currentModeDesc">Menampilkan langsung di halaman ini</span>
+    &nbsp;·&nbsp;
+    <strong>💡 Tips:</strong> Tekan <kbd>1</kbd> Sleman, <kbd>2</kbd> Banten, <kbd>3</kbd> Jakarta, <kbd>4</kbd> Banten Proxy
+</div>
 
-            let currentUrl = 'https://samsatsleman.jogjaprov.go.id/cek/pajak';
-            let currentType = 'iframe';
-            let isLoading = false;
+<!-- ============================================
+HISTORY / RIWAYAT
+============================================ -->
+<div class="history-section" id="historySection">
+    <div class="history-header">
+        <h3>📜 Riwayat Pencarian</h3>
+        <button class="clear-btn" id="clearHistory">🗑️ Kosongkan</button>
+    </div>
+    <div class="history-list" id="historyList">
+        <div class="history-empty">Belum ada riwayat. Coba cek pajak kendaraan!</div>
+    </div>
+</div>
+</main>
 
-            // Fungsi untuk reset tampilan
-            function resetDisplay() {
-                iframe.style.display = 'none';
-                blockedInfo.classList.remove('active');
-                loading.classList.remove('active');
+<!-- ============================================
+FOOTER
+============================================ -->
+<footer class="footer">
+    <p>
+        © 2026 Portal Cek Pajak Terpadu ·
+        Sumber: <a href="https://samsatsleman.jogjaprov.go.id/cek/pajak" target="_blank">DIY</a>,
+        <a href="https://infopkb.bantenprov.go.id/index.php" target="_blank">Banten</a>,
+        <a href="https://samsat-pkb2.jakarta.go.id/" target="_blank">DKI Jakarta</a> ·
+        <span id="versionInfo">v2.0 · 4 Mode Akses</span>
+    </p>
+</footer>
+
+<!-- ============================================
+JAVASCRIPT
+============================================ -->
+<script>
+    (function() {
+        'use strict';
+
+        // ============================================
+        // DOM REFS
+        // ============================================
+        const iframe = document.getElementById('mainIframe');
+        const loading = document.getElementById('loading');
+        const blockedInfo = document.getElementById('blockedInfo');
+        const wrapper = document.getElementById('iframeWrapper');
+        const openDirectBtn = document.getElementById('openDirectBtn');
+        const openPopupBtn = document.getElementById('openPopupBtn');
+        const blockedName = document.getElementById('blockedName');
+        const buttons = document.querySelectorAll('.nav-tabs button');
+        const themeToggle = document.getElementById('themeToggle');
+        const historyList = document.getElementById('historyList');
+        const clearHistoryBtn = document.getElementById('clearHistory');
+        const proxyWarning = document.getElementById('proxyWarning');
+        const currentModeTag = document.getElementById('currentModeTag');
+        const currentModeDesc = document.getElementById('currentModeDesc');
+
+        // ============================================
+        // STATE
+        // ============================================
+        let currentUrl = 'https://samsatsleman.jogjaprov.go.id/cek/pajak';
+        let currentType = 'iframe';
+        let currentName = 'DIY Sleman';
+        let isLoading = false;
+        let history = JSON.parse(localStorage.getItem('pajakHistory') || '[]');
+
+        // ============================================
+        // FUNGSI UTAMA
+        // ============================================
+
+        // Reset tampilan
+        function resetDisplay() {
+            iframe.style.display = 'none';
+            blockedInfo.classList.remove('active');
+            loading.classList.remove('active');
+            proxyWarning.classList.remove('active');
+        }
+
+        // Update mode info
+        function updateModeInfo(type, name) {
+            const modeMap = {
+                'iframe': { tag: 'IFRAME', cls: 'mode-tag-iframe', desc: 'Menampilkan langsung di halaman ini' },
+                'redirect': { tag: 'REDIRECT', cls: 'mode-tag-redirect', desc: 'Berpindah ke halaman resmi' },
+                'popup': { tag: 'POPUP', cls: 'mode-tag-popup', desc: 'Membuka di window popup' },
+                'proxy': { tag: 'PROXY', cls: 'mode-tag-proxy', desc: 'Menggunakan proxy (uji coba)' }
+            };
+            const info = modeMap[type] || modeMap['iframe'];
+            currentModeTag.textContent = info.tag;
+            currentModeTag.className = 'mode-tag ' + info.cls;
+            currentModeDesc.textContent = info.desc + (name ? ` · ${name}` : '');
+        }
+
+        // Tambah riwayat
+        function addHistory(url, name, type) {
+            const entry = {
+                url,
+                name,
+                type,
+                timestamp: new Date().toLocaleString('id-ID')
+            };
+            // Hapus duplikat
+            history = history.filter(h => h.url !== url);
+            history.unshift(entry);
+            if (history.length > 20) history.pop();
+            localStorage.setItem('pajakHistory', JSON.stringify(history));
+            renderHistory();
+        }
+
+        // Render riwayat
+        function renderHistory() {
+            if (history.length === 0) {
+                historyList.innerHTML = '<div class="history-empty">Belum ada riwayat. Coba cek pajak kendaraan!</div>';
+                return;
             }
+            historyList.innerHTML = history.map((item, index) => `
+                        <span class="chip" data-index="${index}" title="${item.timestamp}">
+                            ${item.name || '❓'} 
+                            <span style="font-size:9px; opacity:0.6;">${item.type || ''}</span>
+                            <span class="remove" data-index="${index}">×</span>
+                        </span>
+                    `).join('');
 
-            // Fungsi switch tab
-            function switchTab(url, type, button, name) {
-                if (isLoading) return;
-                if (url === currentUrl && type === currentType) return;
-
-                isLoading = true;
-                resetDisplay();
-
-                // Update active button
-                buttons.forEach(btn => btn.classList.remove('active'));
-                if (button) button.classList.add('active');
-
-                currentUrl = url;
-                currentType = type;
-
-                if (type === 'iframe') {
-                    // Tampilkan iframe
-                    loading.classList.add('active');
-                    iframe.style.display = 'block';
-                    iframe.style.opacity = '0.3';
-                    iframe.src = url;
-
-                    iframe.onload = function() {
-                        loading.classList.remove('active');
-                        iframe.style.opacity = '1';
-                        isLoading = false;
-                        iframe.onload = null;
-                    };
-
-                    setTimeout(function() {
-                        if (isLoading) {
-                            loading.classList.remove('active');
-                            iframe.style.opacity = '1';
-                            isLoading = false;
-                        }
-                    }, 15000);
-
-                } else {
-                    // Tampilkan info blokir + tombol redirect
-                    blockedName.textContent = name || 'Provinsi';
-                    blockedInfo.classList.add('active');
-                    iframe.style.display = 'none';
-                    openDirectBtn.href = url;
-                    isLoading = false;
-                }
-            }
-
-            // Event listener tombol
-            buttons.forEach(button => {
-                button.addEventListener('click', function(e) {
-                    const url = this.getAttribute('data-url');
-                    const type = this.getAttribute('data-type');
-                    const name = this.textContent.trim().replace(/[🟢🔵🟡].*?(?=IFRAME|BUKA|$)/, '').trim();
-                    switchTab(url, type, this, name);
+            // Event listener untuk chip
+            document.querySelectorAll('.history-list .chip').forEach(chip => {
+                chip.addEventListener('click', function(e) {
+                    if (e.target.classList.contains('remove')) return;
+                    const index = parseInt(this.dataset.index);
+                    const item = history[index];
+                    if (item) {
+                        // Cari tombol yang sesuai
+                        buttons.forEach(btn => {
+                            if (btn.getAttribute('data-url') === item.url) {
+                                btn.click();
+                            }
+                        });
+                    }
                 });
             });
 
-            // Jika tombol langsung diklik di blocked info
-            openDirectBtn.addEventListener('click', function(e) {
-                // Biarkan default behavior (navigate)
-                // Tapi kita tambahkan loading state
+            // Event untuk tombol hapus
+            document.querySelectorAll('.history-list .remove').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const index = parseInt(this.dataset.index);
+                    history.splice(index, 1);
+                    localStorage.setItem('pajakHistory', JSON.stringify(history));
+                    renderHistory();
+                });
+            });
+        }
+
+        // SWITCH TAB (fungsi utama)
+        function switchTab(url, type, button, name) {
+            if (isLoading) return;
+            if (url === currentUrl && type === currentType) return;
+
+            isLoading = true;
+            resetDisplay();
+            updateModeInfo(type, name);
+
+            // Update active button
+            buttons.forEach(btn => btn.classList.remove('active'));
+            if (button) button.classList.add('active');
+
+            currentUrl = url;
+            currentType = type;
+            currentName = name || 'Provinsi';
+
+            // Tambah riwayat
+            addHistory(url, name, type);
+
+            // ============================================
+            // MODE IFRAME
+            // ============================================
+            if (type === 'iframe') {
+                iframe.style.display = 'block';
                 loading.classList.add('active');
-                setTimeout(() => {
+                iframe.style.opacity = '0.3';
+                iframe.src = url;
+
+                iframe.onload = function() {
                     loading.classList.remove('active');
-                }, 3000);
-            });
+                    iframe.style.opacity = '1';
+                    isLoading = false;
+                    iframe.onload = null;
+                };
 
-            // Keyboard shortcut: 1,2,3
-            document.addEventListener('keydown', function(e) {
-                const key = e.key;
-                const tabMap = { '1': 0, '2': 1, '3': 2 };
-                if (key in tabMap) {
-                    const index = tabMap[key];
-                    if (buttons[index]) {
-                        buttons[index].click();
-                        e.preventDefault();
+                setTimeout(function() {
+                    if (isLoading) {
+                        loading.classList.remove('active');
+                        iframe.style.opacity = '1';
+                        isLoading = false;
                     }
-                }
-            });
+                }, 15000);
 
-            // Handle error iframe
-            iframe.onerror = function() {
-                loading.classList.remove('active');
-                iframe.style.opacity = '1';
+                // Sembunyikan blocked info
+                blockedInfo.classList.remove('active');
+
+                // ============================================
+                // MODE REDIRECT
+                // ============================================
+            } else if (type === 'redirect') {
+                blockedName.textContent = name || 'Provinsi';
+                blockedInfo.classList.add('active');
+                iframe.style.display = 'none';
+                // Set link langsung
+                openDirectBtn.href = url;
+                openDirectBtn.textContent = '📂 Buka Halaman ' + (name || '');
+                openPopupBtn.style.display = 'inline-flex';
                 isLoading = false;
-                alert('Gagal memuat layanan. Coba klik tombol "Buka Halaman Langsung".');
+
+                // ============================================
+                // MODE POPUP
+                // ============================================
+            } else if (type === 'popup') {
+                // Buka popup langsung
+                openPopupWindow(url, name);
+                // Tampilkan info
+                blockedName.textContent = name || 'Provinsi';
+                blockedInfo.classList.add('active');
+                iframe.style.display = 'none';
+                openDirectBtn.href = url;
+                openDirectBtn.textContent = '📂 Buka ' + (name || '');
+                openPopupBtn.style.display = 'inline-flex';
+                isLoading = false;
+
+                // ============================================
+                // MODE PROXY
+                // ============================================
+            } else if (type === 'proxy') {
+                // Tampilkan warning
+                proxyWarning.classList.add('active');
+
+                // Gunakan proxy (menggunakan corsproxy.io atau similar)
+                const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(url);
+                // Atau bisa pakai: https://api.allorigins.win/raw?url=
+
+                iframe.style.display = 'block';
+                loading.classList.add('active');
+                iframe.style.opacity = '0.3';
+                iframe.src = proxyUrl;
+
+                iframe.onload = function() {
+                    loading.classList.remove('active');
+                    iframe.style.opacity = '1';
+                    isLoading = false;
+                    iframe.onload = null;
+                };
+
+                setTimeout(function() {
+                    if (isLoading) {
+                        loading.classList.remove('active');
+                        iframe.style.opacity = '1';
+                        isLoading = false;
+                    }
+                }, 20000);
+
+                blockedInfo.classList.remove('active');
+            }
+        }
+
+        // ============================================
+        // FUNGSI POPUP
+        // ============================================
+        function openPopupWindow(url, name) {
+            const width = 1024;
+            const height = 768;
+            const left = (window.screen.width - width) / 2;
+            const top = (window.screen.height - height) / 2;
+            const popup = window.open(
+                url,
+                'cekpajak_' + Date.now(),
+                `width=${width},height=${height},left=${left},top=${top},scrollbars=yes,resizable=yes`
+            );
+            if (popup) {
+                popup.focus();
+            } else {
+                alert('Popup diblokir browser. Izinkan popup atau gunakan mode Redirect.');
+            }
+        }
+
+        // ============================================
+        // EVENT LISTENERS
+        // ============================================
+
+        // Tombol navigasi
+        buttons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                const url = this.getAttribute('data-url');
+                const type = this.getAttribute('data-type');
+                const name = this.getAttribute('data-name') ||
+                    this.textContent.replace(/[🟢🔵🟡]/, '').replace(/\(.*\)/, '').trim();
+                switchTab(url, type, this, name);
+            });
+        });
+
+        // Tombol di blocked info: Buka Langsung (Redirect)
+        openDirectBtn.addEventListener('click', function(e) {
+            // Biarkan default, tapi tambah loading
+            loading.classList.add('active');
+            setTimeout(() => loading.classList.remove('active'), 3000);
+        });
+
+        // Tombol di blocked info: Buka Popup
+        openPopupBtn.addEventListener('click', function() {
+            openPopupWindow(currentUrl, currentName);
+        });
+
+        // ============================================
+        // THEME TOGGLE (OPSI 4: Dark Mode)
+        // ============================================
+        let darkMode = localStorage.getItem('darkMode') === 'true';
+
+        function applyTheme() {
+            if (darkMode) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                themeToggle.textContent = '☀️';
+                themeToggle.title = 'Mode Terang';
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+                themeToggle.textContent = '🌙';
+                themeToggle.title = 'Mode Gelap';
+            }
+            localStorage.setItem('darkMode', String(darkMode));
+        }
+
+        themeToggle.addEventListener('click', function() {
+            darkMode = !darkMode;
+            applyTheme();
+        });
+
+        // ============================================
+        // KEYBOARD SHORTCUT (1,2,3,4)
+        // ============================================
+        document.addEventListener('keydown', function(e) {
+            const key = e.key;
+            const tabMap = {
+                '1': 0, // Sleman
+                '2': 1, // Banten Redirect
+                '3': 2, // Jakarta Popup
+                '4': 3 // Banten Proxy
             };
+            if (key in tabMap) {
+                const index = tabMap[key];
+                if (buttons[index]) {
+                    buttons[index].click();
+                    e.preventDefault();
+                }
+            }
+        });
 
-            console.log('🚗 Portal Cek Pajak siap digunakan!');
-            console.log('💡 Tips: Tekan 1 (Sleman), 2 (Banten), 3 (Jakarta)');
-            console.log('⚠️ Banten & Jakarta diblokir iframe karena kebijakan keamanan server.');
-        })();
-    </script>
+        // ============================================
+        // CLEAR HISTORY
+        // ============================================
+        clearHistoryBtn.addEventListener('click', function() {
+            if (confirm('Hapus semua riwayat pencarian?')) {
+                history = [];
+                localStorage.removeItem('pajakHistory');
+                renderHistory();
+            }
+        });
 
-</body>
-</html>
+        // ============================================
+        // IFRAME ERROR HANDLER
+        // ============================================
+        iframe.onerror = function() {
+            loading.classList.remove('active');
+            iframe.style.opacity = '1';
+            isLoading = false;
+            // Tampilkan info alternatif
+            if (currentType === 'iframe' || currentType === 'proxy') {
+                blockedName.textContent = currentName || 'Provinsi';
+                blockedInfo.classList.add('active');
+                iframe.style.display = 'none';
+                openDirectBtn.href = currentUrl;
+                openDirectBtn.textContent = '📂 Buka ' +
