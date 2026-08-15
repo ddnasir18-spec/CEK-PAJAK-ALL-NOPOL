@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🚗 Portal Cek Pajak - Popup Mode</title>
+    <title>🚗 Portal Cek Pajak - Tab Mode</title>
     <style>
         /* ============================================
-                   CSS VARIABLES & RESET
-                ============================================ */
+                   CSS (SAMA SEPERTI SEBELUMNYA)
+                   ============================================ */
         :root {
             --bg-primary: #f0f4f8;
             --bg-card: #ffffff;
@@ -42,7 +42,6 @@
         body {
             height: 100%;
             overflow: hidden;
-            /* Mencegah scroll halaman utama */;
         }
 
         body {
@@ -115,6 +114,16 @@
             font-size: 11px;
             opacity: 0.7;
             font-weight: 300;
+        }
+
+        .badge-tab {
+            background: #28a745;
+            color: white;
+            font-size: 9px;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            margin-left: 6px;
         }
 
         .header-actions {
@@ -261,13 +270,12 @@
         }
 
         /* ============================================
-                   PROVINCE GRID - FILL AVAILABLE SPACE
+                   PROVINCE GRID
                 ============================================ */
         .province-grid-wrapper {
             flex: 1;
             min-height: 0;
             overflow: hidden;
-            /* Mencegah overflow */;
         }
 
         .province-grid {
@@ -280,7 +288,6 @@
             padding-right: 4px;
         }
 
-        /* Scrollbar tipis */
         .province-grid::-webkit-scrollbar {
             width: 4px;
         }
@@ -343,15 +350,10 @@
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.3px;
-            background: #e8f0fe;
-            color: #1a73e8;
+            background: #28a745;
+            color: white;
             margin-left: auto;
             flex-shrink: 0;
-        }
-
-        [data-theme="dark"] .province-card .card-header .badge {
-            background: #1a2332;
-            color: #58a6ff;
         }
 
         .province-card .kode-nopol {
@@ -410,7 +412,7 @@
             align-items: center;
         }
 
-        .province-card .card-footer .popup-btn {
+        .province-card .card-footer .tab-btn {
             background: var(--header-gradient);
             color: white;
             border: none;
@@ -425,7 +427,7 @@
             gap: 6px;
         }
 
-        .province-card .card-footer .popup-btn:hover {
+        .province-card .card-footer .tab-btn:hover {
             transform: scale(1.04);
             box-shadow: 0 4px 12px rgba(48, 43, 99, 0.3);
         }
@@ -438,7 +440,7 @@
         }
 
         /* ============================================
-                   HISTORY - COMPACT
+                   HISTORY
                 ============================================ */
         .history-section {
             background: var(--bg-card);
@@ -615,6 +617,11 @@
                 font-size: 10px;
             }
 
+            .badge-tab {
+                font-size: 7px;
+                padding: 1px 8px;
+            }
+
             .header-actions {
                 width: 100%;
                 justify-content: center;
@@ -691,7 +698,7 @@
                 font-size: 10px;
                 -webkit-line-clamp: 2;
             }
-            .province-card .card-footer .popup-btn {
+            .province-card .card-footer .tab-btn {
                 font-size: 10px;
                 padding: 4px 12px;
             }
@@ -736,7 +743,7 @@
             .province-card .kode-nopol .kode small {
                 display: none;
             }
-            .province-card .card-footer .popup-btn {
+            .province-card .card-footer .tab-btn {
                 font-size: 9px;
                 padding: 3px 10px;
             }
@@ -750,8 +757,10 @@
     ============================================ -->
     <header class="header">
         <div class="logo">
-            <h1>🚗 CekPajak<span>.id</span></h1>
-            <p>14 Provinsi · Popup Mode</p>
+            <h1>🚗 CekPajak<span>.id</span>
+                <span class="badge-tab">📑 TAB BARU</span>
+            </h1>
+            <p>14 Provinsi · Ekstensi Chrome Aktif</p>
         </div>
         <div class="header-actions">
             <div class="stats-badge">📋 <span id="totalProvinsi">14</span></div>
@@ -774,14 +783,14 @@
     </div>
 
     <!-- ============================================
-    PROVINCE GRID (FILL AVAILABLE SPACE)
+    PROVINCE GRID
     ============================================ -->
     <div class="province-grid-wrapper">
         <div class="province-grid" id="provinceGrid"></div>
     </div>
 
     <!-- ============================================
-    HISTORY (COMPACT)
+    HISTORY
     ============================================ -->
     <div class="history-section">
         <div class="history-header">
@@ -797,8 +806,8 @@
     TOAST
     ============================================ -->
     <div class="toast" id="toast">
-        <span class="icon">🪟</span>
-        <div class="msg">Membuka popup...<small id="toastProvince">Provinsi</small></div>
+        <span class="icon">📑</span>
+        <div class="msg">Membuka tab baru...<small id="toastProvince">Provinsi</small></div>
     </div>
 
     <!-- ============================================
@@ -945,8 +954,8 @@
             let currentView = 'grid';
             let searchQuery = '';
             let activeKode = '';
-            let history = JSON.parse(localStorage.getItem('popupHistory') || '[]');
-            let darkMode = localStorage.getItem('darkModePopup') === 'true';
+            let history = JSON.parse(localStorage.getItem('tabHistory') || '[]');
+            let darkMode = localStorage.getItem('darkModeTab') === 'true';
             let toastTimeout = null;
 
             // ============================================
@@ -963,27 +972,21 @@
             const toastProvince = document.getElementById('toastProvince');
 
             // ============================================
-            // FUNGSI POPUP
+            // FUNGSI BUKA DI TAB BARU
             // ============================================
-            function openPopup(url, name) {
-                const width = Math.min(1100, window.screen.width - 40);
-                const height = Math.min(750, window.screen.height - 40);
-                const left = (window.screen.width - width) / 2;
-                const top = (window.screen.height - height) / 2;
+            function openInNewTab(url, name) {
+                // Buka di tab baru seperti link biasa
+                const newTab = window.open(url, '_blank');
 
-                const popup = window.open(
-                    url,
-                    'cekpajak_' + Date.now(),
-                    `width=${width},height=${height},left=${left},top=${top},scrollbars=yes,resizable=yes,menubar=no,toolbar=no,location=yes,status=no`
-                );
-
-                if (popup) {
-                    popup.focus();
+                if (newTab) {
+                    // Fokus ke tab baru
+                    newTab.focus();
                     addHistory(url, name);
-                    showToast('🪟', `Membuka ${name}`, 'Popup berhasil dibuka');
+                    showToast('📑', `Membuka ${name} di tab baru`, 'Ekstensi Chrome aktif');
                 } else {
-                    alert('⚠️ Popup diblokir browser! Izinkan popup untuk website ini.');
-                    showToast('⚠️', 'Popup diblokir!', 'Izinkan popup di browser Anda');
+                    // Fallback: jika diblokir, buka di tab yang sama
+                    window.location.href = url;
+                    showToast('↗️', `Redirect ke ${name}`, 'Tab baru diblokir');
                 }
             }
 
@@ -1022,7 +1025,7 @@
                                 <div class="card-header">
                                     <span class="emoji">${p.emoji}</span>
                                     <span class="name">${p.name}</span>
-                                    <span class="badge">POPUP</span>
+                                    <span class="badge">TAB</span>
                                 </div>
                                 <div class="kode-nopol">
                                     <span class="label">📛</span>
@@ -1032,25 +1035,25 @@
                                     <div class="desc">${p.desc}</div>
                                 </div>
                                 <div class="card-footer">
-                                    <button class="popup-btn" data-url="${p.url}" data-name="${p.name}">
-                                        🪟 Buka
+                                    <button class="tab-btn" data-url="${p.url}" data-name="${p.name}">
+                                        📑 Buka Tab
                                     </button>
                                     <span class="shortcut">⌨️ ${p.shortcut}</span>
                                 </div>
                             </div>
                         `).join('');
 
-                document.querySelectorAll('.popup-btn').forEach(btn => {
+                document.querySelectorAll('.tab-btn').forEach(btn => {
                     btn.addEventListener('click', function(e) {
                         e.stopPropagation();
-                        openPopup(this.dataset.url, this.dataset.name);
+                        openInNewTab(this.dataset.url, this.dataset.name);
                     });
                 });
 
                 document.querySelectorAll('.province-card').forEach(card => {
                     card.addEventListener('click', function() {
-                        const btn = this.querySelector('.popup-btn');
-                        if (btn) openPopup(btn.dataset.url, btn.dataset.name);
+                        const btn = this.querySelector('.tab-btn');
+                        if (btn) openInNewTab(btn.dataset.url, btn.dataset.name);
                     });
                 });
             }
@@ -1092,7 +1095,7 @@
                 history = history.filter(h => h.url !== url);
                 history.unshift(entry);
                 if (history.length > 20) history.pop();
-                localStorage.setItem('popupHistory', JSON.stringify(history));
+                localStorage.setItem('tabHistory', JSON.stringify(history));
                 renderHistory();
             }
 
@@ -1113,7 +1116,7 @@
                     chip.addEventListener('click', function(e) {
                         if (e.target.classList.contains('remove')) return;
                         const item = history[parseInt(this.dataset.index)];
-                        if (item) openPopup(item.url, item.name);
+                        if (item) openInNewTab(item.url, item.name);
                     });
                 });
 
@@ -1121,7 +1124,7 @@
                     btn.addEventListener('click', function(e) {
                         e.stopPropagation();
                         history.splice(parseInt(this.dataset.index), 1);
-                        localStorage.setItem('popupHistory', JSON.stringify(history));
+                        localStorage.setItem('tabHistory', JSON.stringify(history));
                         renderHistory();
                     });
                 });
@@ -1144,7 +1147,7 @@
             function applyTheme() {
                 document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : '');
                 themeToggle.textContent = darkMode ? '☀️' : '🌙';
-                localStorage.setItem('darkModePopup', String(darkMode));
+                localStorage.setItem('darkModeTab', String(darkMode));
             }
 
             themeToggle.addEventListener('click', () => { darkMode = !darkMode;
@@ -1170,7 +1173,7 @@
             clearHistoryBtn.addEventListener('click', function() {
                 if (confirm('Hapus semua riwayat?')) {
                     history = [];
-                    localStorage.removeItem('popupHistory');
+                    localStorage.removeItem('tabHistory');
                     renderHistory();
                     showToast('🗑️', 'Riwayat dihapus', '');
                 }
@@ -1202,9 +1205,8 @@
                 if (e.key in map) {
                     const p = provinces[map[e.key]];
                     if (p) {
-                        openPopup(p.url, p.name);
+                        openInNewTab(p.url, p.name);
                         e.preventDefault();
-                        // Highlight card
                         document.querySelectorAll('.province-card').forEach((card, i) => {
                             if (i === map[e.key]) {
                                 card.style.transform = 'scale(0.96)';
@@ -1225,7 +1227,8 @@
             renderHistory();
             document.getElementById('totalProvinsi').textContent = provinces.length;
 
-            console.log('🚗 Portal CekPajak.id - 14 Provinsi');
+            console.log('🚗 Portal CekPajak.id - Tab Mode (14 Provinsi)');
+            console.log('📑 Semua provinsi dibuka di TAB BARU agar ekstensi Chrome aktif');
             console.log('⌨️ Shortcut: 1-9,0,q,w,e,r');
 
         })();
