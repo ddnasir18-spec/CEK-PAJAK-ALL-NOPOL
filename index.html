@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🚗 CekPajak.id - Portal Cek Pajak Kendaraan</title>
-    <meta name="description" content="Portal cek pajak kendaraan bermotor seluruh Indonesia. 15 provinsi, cek pajak online.">
+    <meta name="description" content="Portal cek pajak kendaraan bermotor seluruh Indonesia. 16 provinsi, cek pajak online.">
     <meta property="og:title" content="CekPajak.id - Portal Cek Pajak Kendaraan">
-    <meta property="og:description" content="Cek pajak kendaraan online untuk 15 provinsi di Indonesia.">
+    <meta property="og:description" content="Cek pajak kendaraan online untuk 16 provinsi di Indonesia.">
     <meta property="og:type" content="website">
     <meta name="theme-color" content="#0f0c29">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚗</text></svg>">
@@ -766,10 +766,10 @@
             <h1>🚗 CekPajak<span>.id</span>
                 <span class="badge-tab">📑 TAB BARU</span>
             </h1>
-            <p>15 Provinsi · Ekstensi Chrome Aktif</p>
+            <p>16 Provinsi · Ekstensi Chrome Aktif</p>
         </div>
         <div class="header-actions">
-            <div class="stats-badge">📋 <span id="totalProvinsi">15</span></div>
+            <div class="stats-badge">📋 <span id="totalProvinsi">16</span></div>
             <button class="theme-toggle" id="themeToggle" title="Ganti Tema">🌙</button>
         </div>
     </header>
@@ -824,7 +824,7 @@
             'use strict';
 
             // ============================================
-            // DATA PROVINSI (15 PROVINSI)
+            // DATA PROVINSI (16 PROVINSI)
             // ============================================
             const provinces = [{
                 id: 1,
@@ -913,7 +913,6 @@
                 emoji: '🟩',
                 kode: 'BG',
                 kodeDesc: 'Palembang',
-                // URL BARU
                 url: 'https://ppid-bapenda.sumselprov.go.id/cekpajak#hasil',
                 desc: 'Info pajak kendaraan Sumsel (form baru)',
                 shortcut: '0'
@@ -962,6 +961,15 @@
                 url: 'https://portal.bpdbali.id/infosamsat/',
                 desc: 'Info pajak kendaraan Bali',
                 shortcut: 't'
+            }, {
+                id: 16,
+                name: 'Sumatera Utara',
+                emoji: '🏝️',
+                kode: 'BK',
+                kodeDesc: 'Medan, Deli Serdang',
+                url: 'https://bapenda.sumutprov.go.id/website/cek-pajak',
+                desc: 'Info pajak kendaraan Sumut (Bapenda)',
+                shortcut: 'y'
             }];
 
             // ============================================
@@ -1213,7 +1221,8 @@
                     'w': 11,
                     'e': 12,
                     'r': 13,
-                    't': 14
+                    't': 14,
+                    'y': 15
                 };
 
                 if (e.key in map) {
@@ -1241,8 +1250,8 @@
             renderHistory();
             document.getElementById('totalProvinsi').textContent = provinces.length;
 
-            console.log('🚗 Portal CekPajak.id - 15 Provinsi');
-            console.log('⌨️ Shortcut: 1-9,0,q,w,e,r,t');
+            console.log('🚗 Portal CekPajak.id - 16 Provinsi');
+            console.log('⌨️ Shortcut: 1-9,0,q,w,e,r,t,y');
 
         })();
     </script>
