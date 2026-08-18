@@ -907,9 +907,8 @@
                 emoji: '🟩',
                 kode: 'BG',
                 kodeDesc: 'Palembang',
-                // URL BARU
-                url: 'https://ppid-bapenda.sumselprov.go.id/cekpajak#hasil',
-                desc: 'Info pajak kendaraan Sumsel (form baru)',
+                url: 'https://bapenda.sumselprov.go.id/infopajak',
+                desc: 'Info pajak kendaraan Sumsel',
                 shortcut: '0'
             }, {
                 id: 11,
@@ -1091,4 +1090,149 @@
             // ============================================
             // HISTORY
             // ============================================
-            function add
+            function addHistory(url, name) {
+                const entry = { url, name, timestamp: new Date().toLocaleString('id-ID') };
+                history = history.filter(h => h.url !== url);
+                history.unshift(entry);
+                if (history.length > 20) history.pop();
+                localStorage.setItem('tabHistory', JSON.stringify(history));
+                renderHistory();
+            }
+
+            function renderHistory() {
+                if (history.length === 0) {
+                    historyList.innerHTML = '<div class="history-empty">Belum ada riwayat.</div>';
+                    return;
+                }
+
+                historyList.innerHTML = history.map((item, index) => `
+                            <span class="chip" data-index="${index}" title="${item.timestamp}">
+                                ${item.name || '❓'} 
+                                <span class="remove" data-index="${index}">×</span>
+                            </span>
+                        `).join('');
+
+                document.querySelectorAll('.history-list .chip').forEach(chip => {
+                    chip.addEventListener('click', function(e) {
+                        if (e.target.classList.contains('remove')) return;
+                        const item = history[parseInt(this.dataset.index)];
+                        if (item) openInNewTab(item.url, item.name);
+                    });
+                });
+
+                document.querySelectorAll('.history-list .remove').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        history.splice(parseInt(this.dataset.index), 1);
+                        localStorage.setItem('tabHistory', JSON.stringify(history));
+                        renderHistory();
+                    });
+                });
+            }
+
+            // ============================================
+            // TOAST
+            // ============================================
+            function showToast(icon, msg, sub) {
+                clearTimeout(toastTimeout);
+                toast.querySelector('.icon').textContent = icon;
+                toast.querySelector('.msg').innerHTML = msg + (sub ? `<small>${sub}</small>` : '');
+                toast.classList.add('show');
+                toastTimeout = setTimeout(() => toast.classList.remove('show'), 2500);
+            }
+
+            // ============================================
+            // THEME
+            // ============================================
+            function applyTheme() {
+                document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : '');
+                themeToggle.textContent = darkMode ? '☀️' : '🌙';
+                localStorage.setItem('darkModeTab', String(darkMode));
+            }
+
+            themeToggle.addEventListener('click', () => { darkMode = !darkMode;
+                applyTheme(); });
+
+            // ============================================
+            // EVENT LISTENERS
+            // ============================================
+            searchInput.addEventListener('input', function() {
+                searchQuery = this.value;
+                renderProvinces();
+            });
+
+            viewButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    viewButtons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentView = this.dataset.view;
+                    renderProvinces();
+                });
+            });
+
+            clearHistoryBtn.addEventListener('click', function() {
+                if (confirm('Hapus semua riwayat?')) {
+                    history = [];
+                    localStorage.removeItem('tabHistory');
+                    renderHistory();
+                    showToast('🗑️', 'Riwayat dihapus', '');
+                }
+            });
+
+            // ============================================
+            // KEYBOARD SHORTCUT
+            // ============================================
+            document.addEventListener('keydown', function(e) {
+                if (e.target.tagName === 'INPUT') return;
+
+                const map = {
+                    '1': 0,
+                    '2': 1,
+                    '3': 2,
+                    '4': 3,
+                    '5': 4,
+                    '6': 5,
+                    '7': 6,
+                    '8': 7,
+                    '9': 8,
+                    '0': 9,
+                    'q': 10,
+                    'w': 11,
+                    'e': 12,
+                    'r': 13
+                };
+
+                if (e.key in map) {
+                    const p = provinces[map[e.key]];
+                    if (p) {
+                        openInNewTab(p.url, p.name);
+                        e.preventDefault();
+                        document.querySelectorAll('.province-card').forEach((card, i) => {
+                            if (i === map[e.key]) {
+                                card.style.transform = 'scale(0.96)';
+                                card.style.borderColor = '#302b63';
+                                setTimeout(() => { card.style.transform = ''; }, 300);
+                            }
+                        });
+                    }
+                }
+            });
+
+            // ============================================
+            // INIT
+            // ============================================
+            applyTheme();
+            renderKodeFilter();
+            renderProvinces();
+            renderHistory();
+            document.getElementById('totalProvinsi').textContent = provinces.length;
+
+            console.log('🚗 Portal CekPajak.id - Tab Mode (14 Provinsi)');
+            console.log('📑 Semua provinsi dibuka di TAB BARU agar ekstensi Chrome aktif');
+            console.log('⌨️ Shortcut: 1-9,0,q,w,e,r');
+
+        })();
+    </script>
+
+</body>
+</html>
