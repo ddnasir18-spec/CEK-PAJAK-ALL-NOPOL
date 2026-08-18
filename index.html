@@ -3,16 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🚗 CekPajak.id - Portal Cek Pajak Kendaraan</title>
-    <meta name="description" content="Portal cek pajak kendaraan bermotor seluruh Indonesia. 14 provinsi, cek pajak online.">
-    <meta property="og:title" content="CekPajak.id - Portal Cek Pajak Kendaraan">
-    <meta property="og:description" content="Cek pajak kendaraan online untuk 14 provinsi di Indonesia.">
-    <meta property="og:type" content="website">
-    <meta name="theme-color" content="#0f0c29">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚗</text></svg>">
+    <title>🚗 Portal Cek Pajak - Tab Mode</title>
     <style>
         /* ============================================
-                   CSS (LENGKAP SAMA SEPERTI SEBELUMNYA)
+                   CSS (SAMA SEPERTI SEBELUMNYA)
                    ============================================ */
         :root {
             --bg-primary: #f0f4f8;
@@ -63,7 +57,7 @@
         }
 
         /* ============================================
-                   HEADER
+                   HEADER - COMPACT
                 ============================================ */
         .header {
             background: var(--header-gradient);
@@ -179,7 +173,7 @@
         }
 
         /* ============================================
-                   GRID CONTROLS
+                   GRID CONTROLS - COMPACT
                 ============================================ */
         .grid-controls {
             display: flex;
@@ -982,13 +976,16 @@
             // FUNGSI BUKA DI TAB BARU
             // ============================================
             function openInNewTab(url, name) {
+                // Buka di tab baru seperti link biasa
                 const newTab = window.open(url, '_blank');
 
                 if (newTab) {
+                    // Fokus ke tab baru
                     newTab.focus();
                     addHistory(url, name);
                     showToast('📑', `Membuka ${name} di tab baru`, 'Ekstensi Chrome aktif');
                 } else {
+                    // Fallback: jika diblokir, buka di tab yang sama
                     window.location.href = url;
                     showToast('↗️', `Redirect ke ${name}`, 'Tab baru diblokir');
                 }
@@ -1022,4 +1019,76 @@
                     return;
                 }
 
-                grid.className = 'province-grid ' + (currentView === 'list' ? 'list-view
+                grid.className = 'province-grid ' + (currentView === 'list' ? 'list-view' : '');
+
+                grid.innerHTML = filtered.map(p => `
+                            <div class="province-card" data-id="${p.id}">
+                                <div class="card-header">
+                                    <span class="emoji">${p.emoji}</span>
+                                    <span class="name">${p.name}</span>
+                                    <span class="badge">TAB</span>
+                                </div>
+                                <div class="kode-nopol">
+                                    <span class="label">📛</span>
+                                    <span class="kode">${p.kode} <small>${p.kodeDesc}</small></span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="desc">${p.desc}</div>
+                                </div>
+                                <div class="card-footer">
+                                    <button class="tab-btn" data-url="${p.url}" data-name="${p.name}">
+                                        📑 Buka Tab
+                                    </button>
+                                    <span class="shortcut">⌨️ ${p.shortcut}</span>
+                                </div>
+                            </div>
+                        `).join('');
+
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        openInNewTab(this.dataset.url, this.dataset.name);
+                    });
+                });
+
+                document.querySelectorAll('.province-card').forEach(card => {
+                    card.addEventListener('click', function() {
+                        const btn = this.querySelector('.tab-btn');
+                        if (btn) openInNewTab(btn.dataset.url, btn.dataset.name);
+                    });
+                });
+            }
+
+            // ============================================
+            // RENDER FILTER KODE
+            // ============================================
+            function renderKodeFilter() {
+                const allKodes = [];
+                provinces.forEach(p => {
+                    p.kode.split(',').map(k => k.trim()).forEach(k => {
+                        if (!allKodes.includes(k)) allKodes.push(k);
+                    });
+                });
+                allKodes.sort();
+
+                kodeFilter.innerHTML = `
+                            <span style="font-size:9px;color:var(--text-secondary);font-weight:600;margin-right:2px;">FILTER:</span>
+                            <button class="kode-btn ${activeKode === '' ? 'active' : ''}" data-kode="">Semua</button>
+                            ${allKodes.map(k => `
+                                <button class="kode-btn ${activeKode === k ? 'active' : ''}" data-kode="${k}">${k}</button>
+                            `).join('')}
+                        `;
+
+                kodeFilter.querySelectorAll('.kode-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        activeKode = this.dataset.kode;
+                        renderKodeFilter();
+                        renderProvinces();
+                    });
+                });
+            }
+
+            // ============================================
+            // HISTORY
+            // ============================================
+            function add
