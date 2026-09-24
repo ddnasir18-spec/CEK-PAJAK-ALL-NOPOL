@@ -4,16 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🚗 CekPajak.id - Portal Cek Pajak Kendaraan</title>
-    <meta name="description" content="Portal cek pajak kendaraan bermotor seluruh Indonesia. 16 provinsi, cek pajak online.">
-    <meta property="og:title" content="CekPajak.id - Portal Cek Pajak Kendaraan">
-    <meta property="og:description" content="Cek pajak kendaraan online untuk 16 provinsi di Indonesia.">
-    <meta property="og:type" content="website">
-    <meta name="theme-color" content="#0f0c29">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚗</text></svg>">
     <style>
-        /* ============================================
-                   CSS (SAMA SEPERTI SEBELUMNYA)
-                   ============================================ */
         :root {
             --bg-primary: #f0f4f8;
             --bg-card: #ffffff;
@@ -25,6 +16,7 @@
             --header-gradient: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
             --border-color: #e8edf2;
             --card-hover: #f8faff;
+            --badge-playstore: #01875f;
         }
 
         [data-theme="dark"] {
@@ -38,20 +30,11 @@
             --header-gradient: linear-gradient(135deg, #0a0a1a, #1a1a3e, #0d0d2b);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html,
-        body {
-            height: 100%;
-            overflow: hidden;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; overflow: hidden; }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
             transition: var(--transition);
@@ -59,12 +42,8 @@
             display: flex;
             flex-direction: column;
             height: 100vh;
-            max-height: 100vh;
         }
 
-        /* ============================================
-                   HEADER
-                ============================================ */
         .header {
             background: var(--header-gradient);
             color: white;
@@ -77,68 +56,13 @@
             flex-wrap: wrap;
             gap: 8px;
             flex-shrink: 0;
-            position: relative;
-            overflow: hidden;
         }
 
-        .header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -10%;
-            width: 200px;
-            height: 200px;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 50%;
-            pointer-events: none;
-        }
+        .logo h1 { font-size: 20px; font-weight: 800; }
+        .logo h1 span { font-weight: 300; opacity: 0.6; font-size: 14px; }
+        .logo p { font-size: 11px; opacity: 0.7; }
 
-        .logo {
-            position: relative;
-            z-index: 1;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .logo h1 {
-            font-size: 20px;
-            font-weight: 800;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            letter-spacing: -0.3px;
-        }
-
-        .logo h1 span {
-            font-weight: 300;
-            opacity: 0.6;
-            font-size: 14px;
-        }
-
-        .logo p {
-            font-size: 11px;
-            opacity: 0.7;
-            font-weight: 300;
-        }
-
-        .badge-tab {
-            background: #28a745;
-            color: white;
-            font-size: 9px;
-            padding: 2px 12px;
-            border-radius: 20px;
-            font-weight: 600;
-            margin-left: 6px;
-        }
-
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            position: relative;
-            z-index: 1;
-        }
+        .header-actions { display: flex; align-items: center; gap: 8px; }
 
         .stats-badge {
             background: rgba(255, 255, 255, 0.1);
@@ -146,14 +70,6 @@
             border-radius: 30px;
             font-size: 12px;
             border: 1px solid rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(4px);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .stats-badge span {
-            font-weight: 700;
         }
 
         .theme-toggle {
@@ -165,22 +81,8 @@
             border-radius: 50%;
             cursor: pointer;
             font-size: 16px;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(4px);
-            flex-shrink: 0;
         }
 
-        .theme-toggle:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: rotate(20deg) scale(1.05);
-        }
-
-        /* ============================================
-                   GRID CONTROLS
-                ============================================ */
         .grid-controls {
             display: flex;
             justify-content: space-between;
@@ -191,16 +93,8 @@
             margin: 8px 0 6px 0;
         }
 
-        .grid-controls .filter-label {
-            font-size: 12px;
-            color: var(--text-secondary);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            flex-wrap: wrap;
-        }
-
-        .grid-controls .filter-label input {
+        .filter-label { font-size: 12px; color: var(--text-secondary); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+        .filter-label input {
             padding: 4px 12px;
             border-radius: 30px;
             border: 1px solid var(--border-color);
@@ -208,23 +102,11 @@
             color: var(--text-primary);
             font-size: 12px;
             width: 160px;
-            transition: var(--transition);
-            outline: none;
             height: 30px;
         }
 
-        .grid-controls .filter-label input:focus {
-            border-color: #302b63;
-            box-shadow: 0 0 0 3px rgba(48, 43, 99, 0.12);
-        }
-
-        .grid-controls .filter-label .kode-filter {
-            display: flex;
-            gap: 3px;
-            flex-wrap: wrap;
-        }
-
-        .grid-controls .filter-label .kode-filter .kode-btn {
+        .kode-filter { display: flex; gap: 3px; flex-wrap: wrap; }
+        .kode-btn {
             padding: 2px 10px;
             border-radius: 16px;
             border: 1px solid var(--border-color);
@@ -233,27 +115,12 @@
             cursor: pointer;
             font-size: 10px;
             font-weight: 600;
-            transition: var(--transition);
             height: 26px;
         }
+        .kode-btn.active { background: var(--header-gradient); color: white; border-color: transparent; }
 
-        .grid-controls .filter-label .kode-filter .kode-btn:hover {
-            border-color: #302b63;
-            background: var(--card-hover);
-        }
-
-        .grid-controls .filter-label .kode-filter .kode-btn.active {
-            background: var(--header-gradient);
-            color: white;
-            border-color: transparent;
-        }
-
-        .grid-controls .view-toggle {
-            display: flex;
-            gap: 4px;
-        }
-
-        .grid-controls .view-toggle button {
+        .view-toggle { display: flex; gap: 4px; }
+        .view-toggle button {
             padding: 4px 12px;
             border-radius: 30px;
             border: 1px solid var(--border-color);
@@ -261,52 +128,19 @@
             color: var(--text-secondary);
             cursor: pointer;
             font-size: 11px;
-            transition: var(--transition);
             height: 28px;
         }
+        .view-toggle button.active { background: var(--header-gradient); color: white; border-color: transparent; }
 
-        .grid-controls .view-toggle button.active {
-            background: var(--header-gradient);
-            color: white;
-            border-color: transparent;
-        }
-
-        .grid-controls .view-toggle button:hover:not(.active) {
-            border-color: var(--text-primary);
-        }
-
-        /* ============================================
-                   PROVINCE GRID
-                ============================================ */
-        .province-grid-wrapper {
-            flex: 1;
-            min-height: 0;
-            overflow: hidden;
-        }
+        .province-grid-wrapper { flex: 1; min-height: 0; overflow: hidden; }
 
         .province-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
             gap: 10px;
             height: 100%;
-            align-content: start;
             overflow-y: auto;
             padding-right: 4px;
-        }
-
-        .province-grid::-webkit-scrollbar {
-            width: 4px;
-        }
-        .province-grid::-webkit-scrollbar-thumb {
-            background: var(--border-color);
-            border-radius: 4px;
-        }
-        .province-grid::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        .province-grid.list-view {
-            grid-template-columns: 1fr 1fr;
         }
 
         .province-card {
@@ -315,54 +149,29 @@
             padding: 14px 16px;
             box-shadow: var(--shadow);
             border: 1px solid var(--border-color);
-            transition: var(--transition);
             cursor: pointer;
             display: flex;
             flex-direction: column;
             height: fit-content;
         }
+        .province-card:hover { transform: translateY(-2px); border-color: #302b63; }
 
-        .province-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-            border-color: #302b63;
-        }
+        .card-header { display: flex; align-items: center; gap: 10px; }
+        .card-header .emoji { font-size: 24px; }
+        .card-header .name { font-size: 14px; font-weight: 700; }
 
-        .province-card:active {
-            transform: scale(0.97);
-        }
-
-        .province-card .card-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .province-card .card-header .emoji {
-            font-size: 24px;
-            line-height: 1;
-        }
-
-        .province-card .card-header .name {
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-
-        .province-card .card-header .badge {
+        .badge {
             font-size: 8px;
             padding: 1px 10px;
             border-radius: 20px;
             font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
             background: #28a745;
             color: white;
             margin-left: auto;
-            flex-shrink: 0;
         }
+        .badge-playstore { background: var(--badge-playstore); font-size: 7px; padding: 1px 8px; }
 
-        .province-card .kode-nopol {
+        .kode-nopol {
             display: flex;
             align-items: center;
             gap: 8px;
@@ -372,44 +181,22 @@
             border-radius: 8px;
             border: 1px dashed var(--border-color);
         }
-
-        .province-card .kode-nopol .label {
-            font-size: 9px;
-            font-weight: 600;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
-
-        .province-card .kode-nopol .kode {
+        .kode-nopol .label { font-size: 9px; font-weight: 600; color: var(--text-secondary); }
+        .kode-nopol .kode {
             font-size: 16px;
             font-weight: 800;
-            color: var(--text-primary);
             font-family: 'Courier New', monospace;
             background: var(--bg-card);
             padding: 0 10px;
             border-radius: 6px;
             border: 1px solid var(--border-color);
         }
+        .kode-nopol .kode small { font-size: 10px; font-weight: 400; color: var(--text-secondary); margin-left: 4px; }
 
-        .province-card .kode-nopol .kode small {
-            font-size: 10px;
-            font-weight: 400;
-            color: var(--text-secondary);
-            margin-left: 4px;
-        }
+        .desc { font-size: 11px; color: var(--text-secondary); line-height: 1.4; }
+        .desc.warning { color: #e67e22; font-weight: 500; }
 
-        .province-card .card-body .desc {
-            font-size: 11px;
-            color: var(--text-secondary);
-            line-height: 1.4;
-            display: -webkit-box;
-            -webkit-line-clamp: 1;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        .province-card .card-footer {
+        .card-footer {
             margin-top: 8px;
             padding-top: 8px;
             border-top: 1px solid var(--border-color);
@@ -418,7 +205,7 @@
             align-items: center;
         }
 
-        .province-card .card-footer .tab-btn {
+        .tab-btn {
             background: var(--header-gradient);
             color: white;
             border: none;
@@ -427,118 +214,38 @@
             font-size: 11px;
             font-weight: 600;
             cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 6px;
         }
+        .tab-btn:hover { transform: scale(1.04); }
+        .btn-playstore { background: var(--badge-playstore); }
 
-        .province-card .card-footer .tab-btn:hover {
-            transform: scale(1.04);
-            box-shadow: 0 4px 12px rgba(48, 43, 99, 0.3);
-        }
+        .shortcut { font-size: 10px; color: var(--text-secondary); opacity: 0.4; font-family: monospace; }
 
-        .province-card .card-footer .shortcut {
-            font-size: 10px;
-            color: var(--text-secondary);
-            opacity: 0.4;
-            font-family: monospace;
-        }
-
-        /* ============================================
-                   HISTORY
-                ============================================ */
         .history-section {
             background: var(--bg-card);
             border-radius: var(--radius);
             padding: 8px 16px;
             box-shadow: var(--shadow);
             border: 1px solid var(--border-color);
-            flex-shrink: 0;
             margin-top: 6px;
             max-height: 60px;
             overflow: hidden;
         }
+        .history-header { display: flex; justify-content: space-between; align-items: center; }
+        .history-header h3 { font-size: 12px; }
+        .clear-btn { background: none; border: none; color: #dc3545; cursor: pointer; font-size: 10px; }
 
-        .history-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .history-header h3 {
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: var(--text-primary);
-        }
-
-        .history-header .clear-btn {
-            background: none;
-            border: none;
-            color: #dc3545;
-            cursor: pointer;
-            font-size: 10px;
-            font-weight: 500;
-            padding: 2px 10px;
-            border-radius: 4px;
-            transition: var(--transition);
-        }
-
-        .history-header .clear-btn:hover {
-            background: rgba(220, 53, 69, 0.08);
-        }
-
-        .history-list {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-            margin-top: 4px;
-            max-height: 28px;
-            overflow-y: auto;
-        }
-
-        .history-list .chip {
+        .history-list { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; max-height: 28px; overflow-y: auto; }
+        .chip {
             background: var(--bg-primary);
             padding: 2px 12px;
             border-radius: 16px;
             font-size: 10px;
-            color: var(--text-primary);
             border: 1px solid var(--border-color);
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
             cursor: pointer;
-            transition: var(--transition);
         }
+        .chip .remove { color: #dc3545; font-weight: bold; margin-left: 4px; }
+        .history-empty { color: var(--text-secondary); font-size: 11px; }
 
-        .history-list .chip:hover {
-            border-color: #302b63;
-            transform: scale(1.03);
-        }
-
-        .history-list .chip .remove {
-            color: #dc3545;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 12px;
-            line-height: 1;
-        }
-
-        .history-list .chip .remove:hover {
-            transform: scale(1.2);
-        }
-
-        .history-empty {
-            color: var(--text-secondary);
-            font-size: 11px;
-            opacity: 0.5;
-        }
-
-        /* ============================================
-                   TOAST
-                ============================================ */
         .toast {
             position: fixed;
             bottom: 20px;
@@ -553,230 +260,34 @@
             gap: 10px;
             transform: translateY(100px);
             opacity: 0;
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: all 0.4s;
             z-index: 999;
-            max-width: 360px;
         }
-
-        .toast.show {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        .toast .icon {
-            font-size: 20px;
-        }
-
-        .toast .msg {
-            font-size: 13px;
-            color: var(--text-primary);
-        }
-
-        .toast .msg small {
-            display: block;
-            font-size: 11px;
-            color: var(--text-secondary);
-            font-weight: 300;
-        }
-
-        /* ============================================
-                   RESPONSIVE
-                ============================================ */
-        @media (max-width: 1024px) {
-            .province-grid {
-                grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-                gap: 8px;
-            }
-            .province-card {
-                padding: 12px 14px;
-            }
-            .province-card .card-header .name {
-                font-size: 13px;
-            }
-            .province-card .kode-nopol .kode {
-                font-size: 14px;
-            }
-            .province-card .kode-nopol .kode small {
-                font-size: 9px;
-            }
-        }
+        .toast.show { transform: translateY(0); opacity: 1; }
+        .toast .msg { font-size: 13px; }
+        .toast .msg small { display: block; font-size: 11px; color: var(--text-secondary); }
 
         @media (max-width: 768px) {
-            body {
-                padding: 8px;
-            }
-
-            .header {
-                padding: 10px 14px;
-                flex-direction: column;
-                text-align: center;
-                gap: 4px;
-            }
-            .logo h1 {
-                font-size: 17px;
-                justify-content: center;
-            }
-            .logo h1 span {
-                font-size: 12px;
-            }
-            .logo p {
-                font-size: 10px;
-            }
-
-            .badge-tab {
-                font-size: 7px;
-                padding: 1px 8px;
-            }
-
-            .header-actions {
-                width: 100%;
-                justify-content: center;
-            }
-            .stats-badge {
-                font-size: 10px;
-                padding: 3px 12px;
-            }
-
-            .grid-controls {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 4px;
-                margin: 4px 0;
-            }
-            .grid-controls .filter-label {
-                justify-content: center;
-                flex-wrap: wrap;
-            }
-            .grid-controls .filter-label input {
-                width: 100%;
-                max-width: 200px;
-                height: 28px;
-                font-size: 11px;
-            }
-            .grid-controls .filter-label .kode-filter {
-                justify-content: center;
-            }
-            .grid-controls .filter-label .kode-filter .kode-btn {
-                font-size: 9px;
-                padding: 1px 8px;
-                height: 22px;
-            }
-            .grid-controls .view-toggle {
-                justify-content: center;
-            }
-
-            .province-grid {
-                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-                gap: 6px;
-            }
-            .province-grid.list-view {
-                grid-template-columns: 1fr;
-            }
-
-            .province-card {
-                padding: 10px 12px;
-            }
-            .province-card .card-header .emoji {
-                font-size: 20px;
-            }
-            .province-card .card-header .name {
-                font-size: 12px;
-            }
-            .province-card .card-header .badge {
-                font-size: 7px;
-                padding: 1px 8px;
-            }
-            .province-card .kode-nopol {
-                padding: 3px 10px;
-                margin: 3px 0 4px 0;
-            }
-            .province-card .kode-nopol .label {
-                font-size: 8px;
-            }
-            .province-card .kode-nopol .kode {
-                font-size: 13px;
-                padding: 0 8px;
-            }
-            .province-card .kode-nopol .kode small {
-                font-size: 8px;
-            }
-            .province-card .card-body .desc {
-                font-size: 10px;
-                -webkit-line-clamp: 2;
-            }
-            .province-card .card-footer .tab-btn {
-                font-size: 10px;
-                padding: 4px 12px;
-            }
-            .province-card .card-footer .shortcut {
-                font-size: 9px;
-            }
-
-            .history-section {
-                padding: 6px 12px;
-                max-height: 50px;
-            }
-            .history-header h3 {
-                font-size: 11px;
-            }
-            .history-list {
-                max-height: 24px;
-            }
-            .history-list .chip {
-                font-size: 9px;
-                padding: 1px 10px;
-            }
-
-            .toast {
-                left: 16px;
-                right: 16px;
-                bottom: 16px;
-                padding: 10px 14px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .province-grid {
-                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-                gap: 5px;
-            }
-            .province-card .card-header .name {
-                font-size: 11px;
-            }
-            .province-card .kode-nopol .kode {
-                font-size: 11px;
-            }
-            .province-card .kode-nopol .kode small {
-                display: none;
-            }
-            .province-card .card-footer .tab-btn {
-                font-size: 9px;
-                padding: 3px 10px;
-            }
+            .province-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 6px; }
+            .province-card { padding: 10px 12px; }
+            .card-header .name { font-size: 12px; }
+            .kode-nopol .kode { font-size: 13px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- ============================================
-    HEADER
-    ============================================ -->
     <header class="header">
         <div class="logo">
-            <h1>🚗 CekPajak<span>.id</span>
-                <span class="badge-tab">📑 TAB BARU</span>
-            </h1>
-            <p>16 Provinsi · Ekstensi Chrome Aktif</p>
+            <h1>🚗 CekPajak<span>.id</span></h1>
+            <p>19 Provinsi · Web & Play Store</p>
         </div>
         <div class="header-actions">
-            <div class="stats-badge">📋 <span id="totalProvinsi">16</span></div>
-            <button class="theme-toggle" id="themeToggle" title="Ganti Tema">🌙</button>
+            <div class="stats-badge">📋 <span id="totalProvinsi">19</span></div>
+            <button class="theme-toggle" id="themeToggle">🌙</button>
         </div>
     </header>
 
-    <!-- ============================================
-    GRID CONTROLS
-    ============================================ -->
     <div class="grid-controls">
         <div class="filter-label">
             🔍 <input type="text" id="searchInput" placeholder="Cari provinsi / kode...">
@@ -788,16 +299,10 @@
         </div>
     </div>
 
-    <!-- ============================================
-    PROVINCE GRID
-    ============================================ -->
     <div class="province-grid-wrapper">
         <div class="province-grid" id="provinceGrid"></div>
     </div>
 
-    <!-- ============================================
-    HISTORY
-    ============================================ -->
     <div class="history-section">
         <div class="history-header">
             <h3>📜 Riwayat</h3>
@@ -808,173 +313,37 @@
         </div>
     </div>
 
-    <!-- ============================================
-    TOAST
-    ============================================ -->
     <div class="toast" id="toast">
         <span class="icon">📑</span>
         <div class="msg">Membuka tab baru...<small id="toastProvince">Provinsi</small></div>
     </div>
 
-    <!-- ============================================
-    JAVASCRIPT
-    ============================================ -->
     <script>
         (function() {
             'use strict';
 
-            // ============================================
-            // DATA PROVINSI (16 PROVINSI)
-            // ============================================
-            const provinces = [{
-                id: 1,
-                name: 'DIY Sleman',
-                emoji: '🟡',
-                kode: 'AB',
-                kodeDesc: 'Yogyakarta',
-                url: 'https://samsatsleman.jogjaprov.go.id/cek/pajak',
-                desc: 'Cek pajak kendaraan DIY Sleman',
-                shortcut: '1'
-            }, {
-                id: 2,
-                name: 'Banten',
-                emoji: '🟢',
-                kode: 'A',
-                kodeDesc: 'Tangerang, Serang',
-                url: 'https://infopkb.bantenprov.go.id/index.php',
-                desc: 'Informasi PKB Provinsi Banten',
-                shortcut: '2'
-            }, {
-                id: 3,
-                name: 'DKI Jakarta',
-                emoji: '🔵',
-                kode: 'B',
-                kodeDesc: 'Jakarta',
-                url: 'https://samsat-pkb2.jakarta.go.id/',
-                desc: 'Samsat PKB DKI Jakarta',
-                shortcut: '3'
-            }, {
-                id: 4,
-                name: 'Jambi',
-                emoji: '🟣',
-                kode: 'BH',
-                kodeDesc: 'Jambi',
-                url: 'https://jambisamsat.net/infopkb.html',
-                desc: 'Informasi PKB Provinsi Jambi',
-                shortcut: '4'
-            }, {
-                id: 5,
-                name: 'Jawa Timur',
-                emoji: '🔴',
-                kode: 'L, M, N, P, S, W, AG',
-                kodeDesc: 'Surabaya, Malang',
-                url: 'https://bapenda.jatimprov.go.id/info/pkb',
-                desc: 'Info pajak kendaraan Jawa Timur',
-                shortcut: '5'
-            }, {
-                id: 6,
-                name: 'Lampung',
-                emoji: '🟠',
-                kode: 'BE',
-                kodeDesc: 'Bandar Lampung',
-                url: 'https://ipesat.bapenda.lampungprov.go.id/infopajak',
-                desc: 'Informasi pajak SAMSAT Lampung',
-                shortcut: '6'
-            }, {
-                id: 7,
-                name: 'Kalimantan Timur',
-                emoji: '🟤',
-                kode: 'KT',
-                kodeDesc: 'Samarinda, Balikpapan',
-                url: 'http://simpator.kaltimprov.go.id/cari.php',
-                desc: 'Info pajak kendaraan Kaltim',
-                shortcut: '7'
-            }, {
-                id: 8,
-                name: 'Riau',
-                emoji: '🔷',
-                kode: 'BM',
-                kodeDesc: 'Pekanbaru',
-                url: 'https://bapenda.riau.go.id/dashboard/layanan/infopajak',
-                desc: 'Bapenda Riau - info pajak',
-                shortcut: '8'
-            }, {
-                id: 9,
-                name: 'Jawa Barat',
-                emoji: '🟦',
-                kode: 'D, E, F, T, Z',
-                kodeDesc: 'Bandung, Bekasi, Bogor',
-                url: 'https://bapenda.jabarprov.go.id/infopkb/',
-                desc: 'Info PKB Jawa Barat',
-                shortcut: '9'
-            }, {
-                id: 10,
-                name: 'Sumatera Selatan',
-                emoji: '🟩',
-                kode: 'BG',
-                kodeDesc: 'Palembang',
-                url: 'https://ppid-bapenda.sumselprov.go.id/cekpajak#hasil',
-                desc: 'Info pajak kendaraan Sumsel (form baru)',
-                shortcut: '0'
-            }, {
-                id: 11,
-                name: 'Kepulauan Riau',
-                emoji: '🛳️',
-                kode: 'BP',
-                kodeDesc: 'Batam, Tanjungpinang',
-                url: 'https://bapenda.kepriprov.go.id/info-pajak',
-                desc: 'Info pajak kendaraan Kepri',
-                shortcut: 'q'
-            }, {
-                id: 12,
-                name: 'Sulawesi Tengah',
-                emoji: '🏔️',
-                kode: 'DN',
-                kodeDesc: 'Palu',
-                url: 'https://bapenda.sultengprov.go.id/pkb',
-                desc: 'Info pajak kendaraan Sulteng',
-                shortcut: 'w'
-            }, {
-                id: 13,
-                name: 'Bengkulu',
-                emoji: '🌴',
-                kode: 'BD',
-                kodeDesc: 'Bengkulu',
-                url: 'https://pusako.bengkuluprov.go.id/infopajak',
-                desc: 'Info pajak kendaraan Bengkulu',
-                shortcut: 'e'
-            }, {
-                id: 14,
-                name: 'Sulawesi Utara',
-                emoji: '🌊',
-                kode: 'DB',
-                kodeDesc: 'Manado',
-                url: 'https://bapenda.sulutprov.go.id/cekpajak',
-                desc: 'Info pajak kendaraan Sulut',
-                shortcut: 'r'
-            }, {
-                id: 15,
-                name: 'Bali',
-                emoji: '🌺',
-                kode: 'DK',
-                kodeDesc: 'Denpasar, Badung',
-                url: 'https://portal.bpdbali.id/infosamsat/',
-                desc: 'Info pajak kendaraan Bali',
-                shortcut: 't'
-            }, {
-                id: 16,
-                name: 'Sumatera Utara',
-                emoji: '🏝️',
-                kode: 'BK',
-                kodeDesc: 'Medan, Deli Serdang',
-                url: 'https://bapenda.sumutprov.go.id/website/cek-pajak',
-                desc: 'Info pajak kendaraan Sumut (Bapenda)',
-                shortcut: 'y'
-            }];
+            const provinces = [
+                { id: 1, name: 'DIY Sleman', emoji: '🟡', kode: 'AB', kodeDesc: 'Yogyakarta', url: 'https://samsatsleman.jogjaprov.go.id/cek/pajak', desc: 'Cek pajak kendaraan DIY Sleman', shortcut: '1', type: 'web' },
+                { id: 2, name: 'Banten', emoji: '🟢', kode: 'A', kodeDesc: 'Tangerang, Serang', url: 'https://infopkb.bantenprov.go.id/index.php', desc: 'Informasi PKB Provinsi Banten', shortcut: '2', type: 'web' },
+                { id: 3, name: 'DKI Jakarta', emoji: '🔵', kode: 'B', kodeDesc: 'Jakarta', url: 'https://samsat-pkb2.jakarta.go.id/', desc: 'Samsat PKB DKI Jakarta', shortcut: '3', type: 'web' },
+                { id: 4, name: 'Jambi', emoji: '🟣', kode: 'BH', kodeDesc: 'Jambi', url: 'https://jambisamsat.net/infopkb.html', desc: 'Informasi PKB Provinsi Jambi', shortcut: '4', type: 'web' },
+                { id: 5, name: 'Jawa Timur', emoji: '🔴', kode: 'L, M, N, P, S, W, AG', kodeDesc: 'Surabaya, Malang', url: 'https://bapenda.jatimprov.go.id/info/pkb', desc: 'Info pajak kendaraan Jawa Timur', shortcut: '5', type: 'web' },
+                { id: 6, name: 'Lampung', emoji: '🟠', kode: 'BE', kodeDesc: 'Bandar Lampung', url: 'https://ipesat.bapenda.lampungprov.go.id/infopajak', desc: 'Informasi pajak SAMSAT Lampung', shortcut: '6', type: 'web' },
+                { id: 7, name: 'Kalimantan Timur', emoji: '🟤', kode: 'KT', kodeDesc: 'Samarinda, Balikpapan', url: 'http://simpator.kaltimprov.go.id/cari.php', desc: 'Info pajak kendaraan Kaltim', shortcut: '7', type: 'web' },
+                { id: 8, name: 'Riau', emoji: '🔷', kode: 'BM', kodeDesc: 'Pekanbaru', url: 'https://bapenda.riau.go.id/dashboard/layanan/infopajak', desc: 'Bapenda Riau - info pajak', shortcut: '8', type: 'web' },
+                { id: 9, name: 'Jawa Barat', emoji: '🟦', kode: 'D, E, F, T, Z', kodeDesc: 'Bandung, Bekasi, Bogor', url: 'https://bapenda.jabarprov.go.id/infopkb/', desc: 'Info PKB Jawa Barat', shortcut: '9', type: 'web' },
+                { id: 10, name: 'Sumatera Selatan', emoji: '🟩', kode: 'BG', kodeDesc: 'Palembang', url: 'https://ppid-bapenda.sumselprov.go.id/cekpajak#hasil', desc: 'Info pajak kendaraan Sumsel', shortcut: '0', type: 'web' },
+                { id: 11, name: 'Kepulauan Riau', emoji: '🛳️', kode: 'BP', kodeDesc: 'Batam, Tanjungpinang', url: 'https://bapenda.kepriprov.go.id/info-pajak', desc: 'Info pajak kendaraan Kepri', shortcut: 'q', type: 'web' },
+                { id: 12, name: 'Sulawesi Tengah', emoji: '🏔️', kode: 'DN', kodeDesc: 'Palu', url: 'https://bapenda.sultengprov.go.id/pkb', desc: 'Info pajak kendaraan Sulteng', shortcut: 'w', type: 'web' },
+                { id: 13, name: 'Bengkulu', emoji: '🌴', kode: 'BD', kodeDesc: 'Bengkulu', url: 'https://pusako.bengkuluprov.go.id/infopajak', desc: 'Info pajak kendaraan Bengkulu', shortcut: 'e', type: 'web' },
+                { id: 14, name: 'Sulawesi Utara', emoji: '🌊', kode: 'DB', kodeDesc: 'Manado', url: 'https://bapenda.sulutprov.go.id/cekpajak', desc: 'Info pajak kendaraan Sulut', shortcut: 'r', type: 'web' },
+                { id: 15, name: 'Bali', emoji: '🌺', kode: 'DK', kodeDesc: 'Denpasar, Badung', url: 'https://portal.bpdbali.id/infosamsat/', desc: 'Info pajak kendaraan Bali', shortcut: 't', type: 'web' },
+                { id: 16, name: 'Sumatera Utara', emoji: '🏝️', kode: 'BK', kodeDesc: 'Medan, Deli Serdang', url: 'https://bapenda.sumutprov.go.id/website/cek-pajak', desc: 'Info pajak kendaraan Sumut', shortcut: 'y', type: 'web' },
+                { id: 17, name: 'Sulawesi Selatan', emoji: '🦐', kode: 'DD, DP, DW', kodeDesc: 'Makassar, Parepare', url: 'https://play.google.com/store/apps/details?id=id.go.sulsel.bapenda.basulmobile&hl=id', desc: '⚠️ Cek via web belum tersedia. Gunakan aplikasi Basul Mobile.', shortcut: 'u', type: 'playstore' },
+                { id: 18, name: 'Jawa Tengah', emoji: '🏛️', kode: 'H, AA, AD, R, K, G', kodeDesc: 'Semarang, Solo, Pekalongan', url: 'https://play.google.com/store/apps/details?id=com.jatengprov.bapenda.newsakpole&hl=id', desc: '⚠️ Cek via web belum tersedia. Gunakan aplikasi New Sakpole.', shortcut: 'i', type: 'playstore' },
+                { id: 19, name: 'Kalimantan Utara', emoji: '🌲', kode: 'KU', kodeDesc: 'Tarakan, Bulungan, Nunukan', url: 'https://play.google.com/store/apps/details?id=bapenda.kaltaraprov.esamsatku&hl=id', desc: '⚠️ Cek via web belum tersedia. Gunakan aplikasi eSamsatku.', shortcut: 'o', type: 'playstore' }
+            ];
 
-            // ============================================
-            // STATE
-            // ============================================
             let currentView = 'grid';
             let searchQuery = '';
             let activeKode = '';
@@ -982,9 +351,6 @@
             let darkMode = localStorage.getItem('darkModeTab') === 'true';
             let toastTimeout = null;
 
-            // ============================================
-            // DOM REFS
-            // ============================================
             const grid = document.getElementById('provinceGrid');
             const searchInput = document.getElementById('searchInput');
             const kodeFilter = document.getElementById('kodeFilter');
@@ -993,27 +359,18 @@
             const clearHistoryBtn = document.getElementById('clearHistory');
             const themeToggle = document.getElementById('themeToggle');
             const toast = document.getElementById('toast');
-            const toastProvince = document.getElementById('toastProvince');
 
-            // ============================================
-            // FUNGSI BUKA DI TAB BARU
-            // ============================================
-            function openInNewTab(url, name) {
+            function openInNewTab(url, name, type) {
                 const newTab = window.open(url, '_blank');
-
                 if (newTab) {
                     newTab.focus();
                     addHistory(url, name);
-                    showToast('📑', `Membuka ${name} di tab baru`, 'Ekstensi Chrome aktif');
+                    showToast(type === 'playstore' ? '📱' : '📑', `Membuka ${name}`, type === 'playstore' ? 'Download aplikasi resmi' : 'Tab baru');
                 } else {
                     window.location.href = url;
-                    showToast('↗️', `Redirect ke ${name}`, 'Tab baru diblokir');
                 }
             }
 
-            // ============================================
-            // RENDER GRID
-            // ============================================
             function renderProvinces() {
                 let filtered = provinces.filter(p =>
                     p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -1030,58 +387,59 @@
                 }
 
                 if (filtered.length === 0) {
-                    grid.innerHTML = `
-                                <div style="grid-column:1/-1;text-align:center;padding:30px 20px;color:var(--text-secondary);">
-                                    <div style="font-size:36px;margin-bottom:8px;">🔍</div>
-                                    <p style="font-size:13px;opacity:0.6;">Tidak ditemukan</p>
-                                </div>
-                            `;
+                    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:30px;">🔍 Tidak ditemukan</div>`;
                     return;
                 }
 
                 grid.className = 'province-grid ' + (currentView === 'list' ? 'list-view' : '');
 
-                grid.innerHTML = filtered.map(p => `
-                            <div class="province-card" data-id="${p.id}">
-                                <div class="card-header">
-                                    <span class="emoji">${p.emoji}</span>
-                                    <span class="name">${p.name}</span>
-                                    <span class="badge">TAB</span>
-                                </div>
-                                <div class="kode-nopol">
-                                    <span class="label">📛</span>
-                                    <span class="kode">${p.kode} <small>${p.kodeDesc}</small></span>
-                                </div>
-                                <div class="card-body">
-                                    <div class="desc">${p.desc}</div>
-                                </div>
-                                <div class="card-footer">
-                                    <button class="tab-btn" data-url="${p.url}" data-name="${p.name}">
-                                        📑 Buka Tab
-                                    </button>
-                                    <span class="shortcut">⌨️ ${p.shortcut}</span>
-                                </div>
+                grid.innerHTML = filtered.map(p => {
+                    const isPlaystore = p.type === 'playstore';
+                    const badgeClass = isPlaystore ? 'badge badge-playstore' : 'badge';
+                    const badgeText = isPlaystore ? '📱 PLAY STORE' : 'TAB';
+                    const btnClass = isPlaystore ? 'tab-btn btn-playstore' : 'tab-btn';
+                    const btnText = isPlaystore ? '📱 Download' : '📑 Buka Tab';
+                    const descClass = isPlaystore ? 'desc warning' : 'desc';
+
+                    return `
+                        <div class="province-card" data-id="${p.id}">
+                            <div class="card-header">
+                                <span class="emoji">${p.emoji}</span>
+                                <span class="name">${p.name}</span>
+                                <span class="${badgeClass}">${badgeText}</span>
                             </div>
-                        `).join('');
+                            <div class="kode-nopol">
+                                <span class="label">📛</span>
+                                <span class="kode">${p.kode} <small>${p.kodeDesc}</small></span>
+                            </div>
+                            <div class="card-body">
+                                <div class="${descClass}">${p.desc}</div>
+                            </div>
+                            <div class="card-footer">
+                                <button class="${btnClass}" data-url="${p.url}" data-name="${p.name}" data-type="${p.type}">
+                                    ${btnText}
+                                </button>
+                                <span class="shortcut">⌨️ ${p.shortcut}</span>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
 
                 document.querySelectorAll('.tab-btn').forEach(btn => {
                     btn.addEventListener('click', function(e) {
                         e.stopPropagation();
-                        openInNewTab(this.dataset.url, this.dataset.name);
+                        openInNewTab(this.dataset.url, this.dataset.name, this.dataset.type);
                     });
                 });
 
                 document.querySelectorAll('.province-card').forEach(card => {
                     card.addEventListener('click', function() {
                         const btn = this.querySelector('.tab-btn');
-                        if (btn) openInNewTab(btn.dataset.url, btn.dataset.name);
+                        if (btn) openInNewTab(btn.dataset.url, btn.dataset.name, btn.dataset.type);
                     });
                 });
             }
 
-            // ============================================
-            // RENDER FILTER KODE
-            // ============================================
             function renderKodeFilter() {
                 const allKodes = [];
                 provinces.forEach(p => {
@@ -1092,12 +450,10 @@
                 allKodes.sort();
 
                 kodeFilter.innerHTML = `
-                            <span style="font-size:9px;color:var(--text-secondary);font-weight:600;margin-right:2px;">FILTER:</span>
-                            <button class="kode-btn ${activeKode === '' ? 'active' : ''}" data-kode="">Semua</button>
-                            ${allKodes.map(k => `
-                                <button class="kode-btn ${activeKode === k ? 'active' : ''}" data-kode="${k}">${k}</button>
-                            `).join('')}
-                        `;
+                    <span style="font-size:9px;font-weight:600;">FILTER:</span>
+                    <button class="kode-btn ${activeKode === '' ? 'active' : ''}" data-kode="">Semua</button>
+                    ${allKodes.map(k => `<button class="kode-btn ${activeKode === k ? 'active' : ''}" data-kode="${k}">${k}</button>`).join('')}
+                `;
 
                 kodeFilter.querySelectorAll('.kode-btn').forEach(btn => {
                     btn.addEventListener('click', function() {
@@ -1108,9 +464,6 @@
                 });
             }
 
-            // ============================================
-            // HISTORY
-            // ============================================
             function addHistory(url, name) {
                 const entry = { url, name, timestamp: new Date().toLocaleString('id-ID') };
                 history = history.filter(h => h.url !== url);
@@ -1125,15 +478,13 @@
                     historyList.innerHTML = '<div class="history-empty">Belum ada riwayat.</div>';
                     return;
                 }
-
                 historyList.innerHTML = history.map((item, index) => `
-                            <span class="chip" data-index="${index}" title="${item.timestamp}">
-                                ${item.name || '❓'} 
-                                <span class="remove" data-index="${index}">×</span>
-                            </span>
-                        `).join('');
+                    <span class="chip" data-index="${index}" title="${item.timestamp}">
+                        ${item.name} <span class="remove" data-index="${index}">×</span>
+                    </span>
+                `).join('');
 
-                document.querySelectorAll('.history-list .chip').forEach(chip => {
+                document.querySelectorAll('.chip').forEach(chip => {
                     chip.addEventListener('click', function(e) {
                         if (e.target.classList.contains('remove')) return;
                         const item = history[parseInt(this.dataset.index)];
@@ -1141,7 +492,7 @@
                     });
                 });
 
-                document.querySelectorAll('.history-list .remove').forEach(btn => {
+                document.querySelectorAll('.remove').forEach(btn => {
                     btn.addEventListener('click', function(e) {
                         e.stopPropagation();
                         history.splice(parseInt(this.dataset.index), 1);
@@ -1151,9 +502,6 @@
                 });
             }
 
-            // ============================================
-            // TOAST
-            // ============================================
             function showToast(icon, msg, sub) {
                 clearTimeout(toastTimeout);
                 toast.querySelector('.icon').textContent = icon;
@@ -1162,25 +510,15 @@
                 toastTimeout = setTimeout(() => toast.classList.remove('show'), 2500);
             }
 
-            // ============================================
-            // THEME
-            // ============================================
             function applyTheme() {
                 document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : '');
                 themeToggle.textContent = darkMode ? '☀️' : '🌙';
                 localStorage.setItem('darkModeTab', String(darkMode));
             }
 
-            themeToggle.addEventListener('click', () => { darkMode = !darkMode;
-                applyTheme(); });
+            themeToggle.addEventListener('click', () => { darkMode = !darkMode; applyTheme(); });
 
-            // ============================================
-            // EVENT LISTENERS
-            // ============================================
-            searchInput.addEventListener('input', function() {
-                searchQuery = this.value;
-                renderProvinces();
-            });
+            searchInput.addEventListener('input', function() { searchQuery = this.value; renderProvinces(); });
 
             viewButtons.forEach(btn => {
                 btn.addEventListener('click', function() {
@@ -1196,65 +534,25 @@
                     history = [];
                     localStorage.removeItem('tabHistory');
                     renderHistory();
-                    showToast('🗑️', 'Riwayat dihapus', '');
                 }
             });
 
-            // ============================================
-            // KEYBOARD SHORTCUT
-            // ============================================
             document.addEventListener('keydown', function(e) {
                 if (e.target.tagName === 'INPUT') return;
-
-                const map = {
-                    '1': 0,
-                    '2': 1,
-                    '3': 2,
-                    '4': 3,
-                    '5': 4,
-                    '6': 5,
-                    '7': 6,
-                    '8': 7,
-                    '9': 8,
-                    '0': 9,
-                    'q': 10,
-                    'w': 11,
-                    'e': 12,
-                    'r': 13,
-                    't': 14,
-                    'y': 15
-                };
-
+                const map = { '1': 0, '2': 1, '3': 2, '4': 3, '5': 4, '6': 5, '7': 6, '8': 7, '9': 8, '0': 9, 'q': 10, 'w': 11, 'e': 12, 'r': 13, 't': 14, 'y': 15, 'u': 16, 'i': 17, 'o': 18 };
                 if (e.key in map) {
                     const p = provinces[map[e.key]];
-                    if (p) {
-                        openInNewTab(p.url, p.name);
-                        e.preventDefault();
-                        document.querySelectorAll('.province-card').forEach((card, i) => {
-                            if (i === map[e.key]) {
-                                card.style.transform = 'scale(0.96)';
-                                card.style.borderColor = '#302b63';
-                                setTimeout(() => { card.style.transform = ''; }, 300);
-                            }
-                        });
-                    }
+                    if (p) { openInNewTab(p.url, p.name, p.type); e.preventDefault(); }
                 }
             });
 
-            // ============================================
-            // INIT
-            // ============================================
             applyTheme();
             renderKodeFilter();
             renderProvinces();
             renderHistory();
             document.getElementById('totalProvinsi').textContent = provinces.length;
 
-            console.log('🚗 Portal CekPajak.id - 16 Provinsi');
-            console.log('⌨️ Shortcut: 1-9,0,q,w,e,r,t,y');
-
         })();
     </script>
-
 </body>
 </html>
