@@ -280,10 +280,10 @@
     <header class="header">
         <div class="logo">
             <h1>🚗 CekPajak<span>.id</span></h1>
-            <p>19 Provinsi · Web & Play Store</p>
+            <p>20 Provinsi · Web & Play Store</p>
         </div>
         <div class="header-actions">
-            <div class="stats-badge">📋 <span id="totalProvinsi">19</span></div>
+            <div class="stats-badge">📋 <span id="totalProvinsi">20</span></div>
             <button class="theme-toggle" id="themeToggle">🌙</button>
         </div>
     </header>
@@ -341,7 +341,8 @@
                 { id: 16, name: 'Sumatera Utara', emoji: '🏝️', kode: 'BK', kodeDesc: 'Medan, Deli Serdang', url: 'https://bapenda.sumutprov.go.id/website/cek-pajak', desc: 'Info pajak kendaraan Sumut', shortcut: 'y', type: 'web' },
                 { id: 17, name: 'Sulawesi Selatan', emoji: '🦐', kode: 'DD, DP, DW', kodeDesc: 'Makassar, Parepare', url: 'https://play.google.com/store/apps/details?id=id.go.sulsel.bapenda.basulmobile&hl=id', desc: '⚠️ Cek via web belum tersedia. Gunakan aplikasi Basul Mobile.', shortcut: 'u', type: 'playstore' },
                 { id: 18, name: 'Jawa Tengah', emoji: '🏛️', kode: 'H, AA, AD, R, K, G', kodeDesc: 'Semarang, Solo, Pekalongan', url: 'https://play.google.com/store/apps/details?id=com.jatengprov.bapenda.newsakpole&hl=id', desc: '⚠️ Cek via web belum tersedia. Gunakan aplikasi New Sakpole.', shortcut: 'i', type: 'playstore' },
-                { id: 19, name: 'Kalimantan Utara', emoji: '🌲', kode: 'KU', kodeDesc: 'Tarakan, Bulungan, Nunukan', url: 'https://play.google.com/store/apps/details?id=bapenda.kaltaraprov.esamsatku&hl=id', desc: '⚠️ Cek via web belum tersedia. Gunakan aplikasi eSamsatku.', shortcut: 'o', type: 'playstore' }
+                { id: 19, name: 'Kalimantan Utara', emoji: '🌲', kode: 'KU', kodeDesc: 'Tarakan, Bulungan, Nunukan', url: 'https://play.google.com/store/apps/details?id=bapenda.kaltaraprov.esamsatku&hl=id', desc: '⚠️ Cek via web belum tersedia. Gunakan aplikasi eSamsatku.', shortcut: 'o', type: 'playstore' },
+                { id: 20, name: 'Kalimantan Selatan', emoji: '⛏️', kode: 'DA', kodeDesc: 'Banjarmasin, Banjarbaru', url: 'https://play.google.com/store/apps/details?id=com.bapendakalselprov.infopajak_mobile&hl=id', desc: '⚠️ Cek via web belum tersedia. Gunakan aplikasi Info Pajak Kalsel.', shortcut: 'p', type: 'playstore' }
             ];
 
             let currentView = 'grid';
@@ -539,7 +540,7 @@
 
             document.addEventListener('keydown', function(e) {
                 if (e.target.tagName === 'INPUT') return;
-                const map = { '1': 0, '2': 1, '3': 2, '4': 3, '5': 4, '6': 5, '7': 6, '8': 7, '9': 8, '0': 9, 'q': 10, 'w': 11, 'e': 12, 'r': 13, 't': 14, 'y': 15, 'u': 16, 'i': 17, 'o': 18 };
+                const map = { '1': 0, '2': 1, '3': 2, '4': 3, '5': 4, '6': 5, '7': 6, '8': 7, '9': 8, '0': 9, 'q': 10, 'w': 11, 'e': 12, 'r': 13, 't': 14, 'y': 15, 'u': 16, 'i': 17, 'o': 18, 'p': 19 };
                 if (e.key in map) {
                     const p = provinces[map[e.key]];
                     if (p) { openInNewTab(p.url, p.name, p.type); e.preventDefault(); }
